@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useEffect, useState, useMemo } from "react";
-import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from "framer-motion";
+import { useEffect, useState, useMemo } from "react";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
 
 function Particles() {
@@ -17,11 +17,11 @@ function Particles() {
   }, []);
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-[1]">
       {particles.map((particle) => (
         <div
           key={particle.id}
-          className="absolute bg-gradient-to-b from-violet-500/60 to-transparent rounded-full"
+          className="absolute bg-gradient-to-b from-violet-500/60 to-transparent rounded-full animate-drift-up"
           style={{
             left: `${particle.x}%`,
             width: particle.size,
@@ -36,6 +36,24 @@ function Particles() {
   );
 }
 
+function BackgroundImage() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      <div className="relative w-full h-full">
+        <Image
+          src="/bernydev/bernydevhero.png"
+          alt=""
+          fill
+          className="object-cover object-center opacity-[0.15] blur-[2px] scale-110"
+          priority
+        />
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0F] via-[#0A0A0F]/90 to-[#0A0A0F]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0F] via-transparent to-[#0A0A0F]/80" />
+    </div>
+  );
+}
+
 function GlowOrbs({ mouseX, mouseY }: { mouseX: number; mouseY: number }) {
   const orb1X = useTransform(mouseX, [-1, 1], [-30, 30]);
   const orb1Y = useTransform(mouseY, [-1, 1], [-30, 30]);
@@ -45,52 +63,32 @@ function GlowOrbs({ mouseX, mouseY }: { mouseX: number; mouseY: number }) {
   return (
     <>
       <motion.div
-        className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-violet-600/20 rounded-full blur-[120px]"
+        className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-violet-600/20 rounded-full blur-[120px] z-[2]"
         style={{ x: orb1X, y: orb1Y }}
       />
       <motion.div
-        className="absolute bottom-1/3 right-1/4 w-[350px] h-[350px] bg-purple-600/15 rounded-full blur-[100px]"
+        className="absolute bottom-1/3 right-1/4 w-[350px] h-[350px] bg-purple-600/15 rounded-full blur-[100px] z-[2]"
         style={{ x: orb2X, y: orb2Y }}
       />
-      <div className="absolute top-1/2 right-1/3 w-[250px] h-[250px] bg-violet-500/10 rounded-full blur-[80px] animate-pulse-glow" />
+      <div className="absolute top-1/2 right-1/3 w-[250px] h-[250px] bg-violet-500/10 rounded-full blur-[80px] animate-pulse-glow z-[2]" />
     </>
   );
 }
 
-function FloatingImage() {
+function GlowPlaceholder() {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-      transition={{ duration: 1, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="relative"
-    >
-      <div className="absolute inset-0 bg-gradient-to-r from-violet-600/40 via-purple-600/30 to-violet-600/40 rounded-3xl blur-3xl scale-95 animate-pulse-glow" />
-      
-      <motion.div
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="relative z-10"
-      >
-        <div className="relative w-[400px] h-[500px] md:w-[450px] md:h-[560px]">
-          <Image
-            src="/bernydev/bernydevhero.png"
-            alt="Berny Dev - Full Stack Developer"
-            fill
-            className="object-contain drop-shadow-2xl"
-            priority
-          />
-        </div>
-      </motion.div>
-
-      <div className="absolute -inset-4 bg-gradient-to-r from-violet-500/20 via-transparent to-purple-500/20 rounded-full blur-xl opacity-50" />
-    </motion.div>
+    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none z-[3]">
+      <div className="absolute inset-0 bg-gradient-to-br from-violet-600/30 via-purple-600/20 to-transparent rounded-full blur-[120px]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-violet-500/10 to-transparent rounded-full blur-[80px]" />
+      <div className="absolute inset-0 animate-pulse-glow">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-violet-500/20 to-purple-500/10 rounded-full blur-[60px]" />
+      </div>
+    </div>
   );
 }
 
 export default function HeroSection() {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   
@@ -110,7 +108,6 @@ export default function HeroSection() {
       
       mouseX.set(normalizedX);
       mouseY.set(normalizedY);
-      setMousePosition({ x: normalizedX, y: normalizedY });
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -122,15 +119,19 @@ export default function HeroSection() {
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0A0F]"
     >
+      <BackgroundImage />
       <Particles />
       <GlowOrbs mouseX={smoothMouseX} mouseY={smoothMouseY} />
+      <GlowPlaceholder />
 
-      <div className="absolute inset-0 bg-gradient-to-b from-violet-950/30 via-[#0A0A0F] to-[#0A0A0F]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-900/20 via-transparent to-transparent" />
+      <div className="absolute inset-0 z-[5]">
+        <div className="absolute inset-0 bg-gradient-to-b from-violet-950/30 via-[#0A0A0F]/50 to-[#0A0A0F]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-900/20 via-transparent to-transparent" />
+      </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 md:py-0">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-          <div className="flex-1 text-center lg:text-left space-y-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 md:py-0 w-full">
+        <div className="flex flex-col lg:flex-row items-center">
+          <div className="flex-1 text-center lg:text-left space-y-8 max-w-2xl">
             <motion.div
               initial={{ opacity: 0, y: 20, scale: 0.9 }}
               animate={isLoaded ? { opacity: 1, y: 0, scale: 1 } : {}}
@@ -228,9 +229,7 @@ export default function HeroSection() {
             </motion.div>
           </div>
 
-          <div className="flex-1 flex items-center justify-center">
-            <FloatingImage />
-          </div>
+          <div className="flex-1 hidden lg:block" />
         </div>
       </div>
 
@@ -238,7 +237,7 @@ export default function HeroSection() {
         initial={{ opacity: 0 }}
         animate={isLoaded ? { opacity: 1 } : {}}
         transition={{ duration: 1, delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
         <motion.div
           animate={{ y: [0, 6, 0] }}

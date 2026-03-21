@@ -19,13 +19,24 @@
   --font-sans: var(--font-inter);
 }
 
-* {
-  cursor: none;
-}
+/* Default cursor restored */
 
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url('/bernydev/logosinfondo.png');
+  background-repeat: repeat;
+  background-size: 120px auto;
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(0.5px);
 }
 
 ::selection {
