@@ -1,34 +1,37 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { useEffect, useState, useMemo, useRef } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import Image from "next/image";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { TorusKnot, Float } from "@react-three/drei";
+import * as THREE from "three";
 
 function Particles() {
   const particles = useMemo(() => {
-    return Array.from({ length: 40 }, (_, i) => ({
+    return Array.from({ length: 30 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       delay: Math.random() * 15,
       duration: 12 + Math.random() * 8,
       size: 2 + Math.random() * 2,
-      opacity: 0.3 + Math.random() * 0.4,
+      opacity: 0.2 + Math.random() * 0.3,
     }));
   }, []);
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-[1]">
-      {particles.map((particle) => (
+      {particles.map((p) => (
         <div
-          key={particle.id}
+          key={p.id}
           className="absolute bg-gradient-to-b from-violet-500/60 to-transparent rounded-full animate-drift-up"
           style={{
-            left: `${particle.x}%`,
-            width: particle.size,
-            height: particle.size * 3,
-            animationDelay: `${particle.delay}s`,
-            animationDuration: `${particle.duration}s`,
-            opacity: particle.opacity,
+            left: `${p.x}%`,
+            width: p.size,
+            height: p.size * 3,
+            animationDelay: `${p.delay}s`,
+            animationDuration: `${p.duration}s`,
+            opacity: p.opacity,
           }}
         />
       ))}
@@ -39,80 +42,111 @@ function Particles() {
 function BackgroundImage() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      <div className="relative w-full h-full">
-        <Image
-          src="/bernydev/bernydevhero.png"
-          alt=""
-          fill
-          className="object-cover object-center opacity-[0.15] blur-[2px] scale-110"
-          priority
-        />
-      </div>
+      <Image
+        src="/bernydev/bernydevhero.png"
+        alt=""
+        fill
+        className="object-cover opacity-[0.12] blur-[3px] scale-110"
+        priority
+      />
       <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0F] via-[#0A0A0F]/90 to-[#0A0A0F]" />
       <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0F] via-transparent to-[#0A0A0F]/80" />
     </div>
   );
 }
 
-function GlowOrbs({ mouseX, mouseY }: { mouseX: number; mouseY: number }) {
-  const orb1X = useTransform(mouseX, [-1, 1], [-30, 30]);
-  const orb1Y = useTransform(mouseY, [-1, 1], [-30, 30]);
-  const orb2X = useTransform(mouseX, [-1, 1], [20, -20]);
-  const orb2Y = useTransform(mouseY, [-1, 1], [20, -20]);
+// 🔥 PARALLAX REAL (logo fijo)
+function BackgroundLogo() {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-[1]">
+      <div className="relative w-[700px] h-[700px] opacity-[0.04]">
+        <Image
+          src="/bernydev/logosinfondo.png"
+          alt=""
+          fill
+          className="object-contain blur-[6px]"
+          priority
+        />
+      </div>
+    </div>
+  );
+}
 
+function GlowOrbs({ mouseX, mouseY }) {
   return (
     <>
       <motion.div
-        className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-violet-600/20 rounded-full blur-[120px] z-[2]"
-        style={{ x: orb1X, y: orb1Y }}
+        className="absolute top-1/4 left-1/4 w-[350px] h-[350px] bg-violet-600/15 rounded-full blur-[120px] z-[2]"
+        style={{ x: mouseX, y: mouseY }}
       />
       <motion.div
-        className="absolute bottom-1/3 right-1/4 w-[350px] h-[350px] bg-purple-600/15 rounded-full blur-[100px] z-[2]"
-        style={{ x: orb2X, y: orb2Y }}
+        className="absolute bottom-1/3 right-1/4 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[100px] z-[2]"
+        style={{ x: mouseX, y: mouseY }}
       />
-      <div className="absolute top-1/2 right-1/3 w-[250px] h-[250px] bg-violet-500/10 rounded-full blur-[80px] animate-pulse-glow z-[2]" />
     </>
   );
 }
 
-function GlowPlaceholder() {
+function AnimatedGeometry() {
+  const meshRef = useRef();
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.15;
+      meshRef.current.rotation.x =
+        Math.sin(state.clock.elapsedTime * 0.1) * 0.1;
+    }
+  });
+
   return (
-    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none z-[3]">
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-600/30 via-purple-600/20 to-transparent rounded-full blur-[120px]" />
-      <div className="absolute inset-0 bg-gradient-to-t from-violet-500/10 to-transparent rounded-full blur-[80px]" />
-      <div className="absolute inset-0 animate-pulse-glow">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-violet-500/20 to-purple-500/10 rounded-full blur-[60px]" />
-      </div>
+    <Float speed={1.2} rotationIntensity={0.2} floatIntensity={0.4}>
+      <TorusKnot ref={meshRef} args={[0.8, 0.25, 100, 16]} scale={1.2}>
+        <meshStandardMaterial
+          color="#A855F7"
+          emissive="#A855F7"
+          emissiveIntensity={0.4}
+          roughness={0.2}
+          metalness={0.8}
+        />
+      </TorusKnot>
+    </Float>
+  );
+}
+
+function Scene3D() {
+  return (
+    <div className="absolute right-10 top-1/2 -translate-y-1/2 w-[400px] h-[400px] z-[3] hidden lg:block">
+      <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
+        <ambientLight intensity={0.3} />
+        <pointLight position={[10, 10, 10]} intensity={1} color="#A855F7" />
+        <AnimatedGeometry />
+      </Canvas>
     </div>
   );
 }
 
 export default function HeroSection() {
   const [isLoaded, setIsLoaded] = useState(false);
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  
-  const springConfig = { damping: 25, stiffness: 150 };
-  const smoothMouseX = useSpring(mouseX, springConfig);
-  const smoothMouseY = useSpring(mouseY, springConfig);
+
+  const smoothX = useSpring(mouseX, { damping: 25, stiffness: 150 });
+  const smoothY = useSpring(mouseY, { damping: 25, stiffness: 150 });
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoaded(true), 100);
-    return () => clearTimeout(timer);
+    setTimeout(() => setIsLoaded(true), 100);
   }, []);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const normalizedX = (e.clientX / window.innerWidth) * 2 - 1;
-      const normalizedY = -(e.clientY / window.innerHeight) * 2 + 1;
-      
-      mouseX.set(normalizedX);
-      mouseY.set(normalizedY);
+    const move = (e) => {
+      mouseX.set((e.clientX / window.innerWidth) * 40 - 20);
+      mouseY.set((e.clientY / window.innerHeight) * 40 - 20);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX, mouseY]);
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
 
   return (
     <section
@@ -120,48 +154,24 @@ export default function HeroSection() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0A0F]"
     >
       <BackgroundImage />
+      <BackgroundLogo />
       <Particles />
-      <GlowOrbs mouseX={smoothMouseX} mouseY={smoothMouseY} />
-      <GlowPlaceholder />
+      <GlowOrbs mouseX={smoothX} mouseY={smoothY} />
+      <Scene3D />
 
-      <div className="absolute inset-0 z-[5]">
-        <div className="absolute inset-0 bg-gradient-to-b from-violet-950/30 via-[#0A0A0F]/50 to-[#0A0A0F]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-900/20 via-transparent to-transparent" />
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 md:py-0 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
         <div className="flex flex-col lg:flex-row items-center">
           <div className="flex-1 text-center lg:text-left space-y-8 max-w-2xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={isLoaded ? { opacity: 1, y: 0, scale: 1 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-violet-500/30 bg-violet-500/10 backdrop-blur-sm"
-            >
-              <motion.span
-                className="w-2.5 h-2.5 bg-emerald-400 rounded-full shadow-[0_0_12px_rgba(52,211,153,0.8)]"
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [1, 0.7, 1],
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              <span className="text-sm font-medium text-violet-200 tracking-wide">
-                Available for projects
-              </span>
-            </motion.div>
-
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9]"
+              className="text-6xl md:text-8xl font-black leading-[0.9]"
             >
-              <span className="bg-gradient-to-b from-white via-violet-100 to-violet-200 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-b from-white to-violet-200 bg-clip-text text-transparent">
                 BERNY
               </span>
               <br />
-              <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-violet-300 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
                 DEV
               </span>
             </motion.h1>
@@ -169,93 +179,16 @@ export default function HeroSection() {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="text-lg md:text-xl text-zinc-400 max-w-lg mx-auto lg:mx-0 leading-relaxed"
+              className="text-lg text-zinc-400"
             >
               Full Stack Developer crafting modern web experiences powered by{" "}
-              <span className="text-violet-400 font-medium">AI</span>
+              <span className="text-violet-400">AI</span>
             </motion.p>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="text-sm text-zinc-500 max-w-md mx-auto lg:mx-0"
-            >
-              Building the future, one line of code at a time. Specializing in 
-              scalable applications and intelligent systems.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.7 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
-            >
-              <motion.a
-                href="#projects"
-                whileHover={{ scale: 1.02, boxShadow: "0 0 40px rgba(168,85,247,0.4)" }}
-                whileTap={{ scale: 0.98 }}
-                className="relative px-8 py-4 rounded-full font-semibold text-sm overflow-hidden group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-purple-600 to-violet-600" />
-                <div className="absolute inset-0 bg-gradient-to-r from-violet-500 via-purple-500 to-violet-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  View Projects
-                  <svg
-                    className="w-4 h-4 transition-transform group-hover:translate-x-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
-                </span>
-              </motion.a>
-
-              <motion.a
-                href="#contact"
-                whileHover={{ scale: 1.02, borderColor: "rgba(168,85,247,0.5)" }}
-                whileTap={{ scale: 0.98 }}
-                className="relative px-8 py-4 rounded-full font-medium text-sm border border-zinc-700 text-zinc-300 hover:text-white hover:border-violet-500/50 transition-all duration-300"
-              >
-                <span className="relative z-10">Contact</span>
-              </motion.a>
-            </motion.div>
           </div>
 
           <div className="flex-1 hidden lg:block" />
         </div>
       </div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={isLoaded ? { opacity: 1 } : {}}
-        transition={{ duration: 1, delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-      >
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-3"
-        >
-          <span className="text-[10px] text-zinc-500 uppercase tracking-[0.3em] font-medium">
-            Scroll
-          </span>
-          <div className="relative w-5 h-9 border border-zinc-700/50 rounded-full">
-            <motion.div
-              className="absolute top-1.5 left-1/2 -translate-x-1/2 w-1 h-2 bg-gradient-to-b from-violet-400 to-purple-500 rounded-full"
-              animate={{ y: [0, 12, 0], opacity: [1, 0.3, 1] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </div>
-        </motion.div>
-      </motion.div>
     </section>
   );
 }

@@ -402,7 +402,7 @@ export default function ProjectsSection() {
         <SectionTitle scrollYProgress={scrollYProgress} />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-          {projects.map((project, index) => (
+          {projects.slice(0, 4).map((project, index) => (
             <ParallaxLayer
               key={project.id}
               speed={0.1 + (index % 2) * 0.05}
@@ -424,13 +424,14 @@ export default function ProjectsSection() {
           viewport={{ once: true }}
           className="mt-24 text-center"
         >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
+          <motion.a
+            href="/projects"
+            whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(168,85,247,0.4)" }}
             whileTap={{ scale: 0.98 }}
-            className="group relative px-10 py-4 rounded-full font-medium text-sm overflow-hidden"
+            className="relative inline-flex px-10 py-4 rounded-full font-semibold text-sm overflow-hidden"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600" />
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-400/20 via-purple-400/20 to-pink-400/20 animate-shimmer" />
+            <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-purple-600 to-violet-600" />
+            <div className="absolute inset-0 bg-gradient-to-r from-violet-500 via-purple-500 to-violet-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <span className="relative z-10 flex items-center gap-3 text-white">
               View All Projects
               <motion.svg
@@ -444,7 +445,7 @@ export default function ProjectsSection() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </motion.svg>
             </span>
-          </motion.button>
+          </motion.a>
         </motion.div>
       </div>
 

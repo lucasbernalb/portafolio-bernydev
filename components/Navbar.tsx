@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
 const navLinks = [
-  { name: "Home", href: "#hero" },
-  { name: "Projects", href: "#projects" },
+  { name: "Home", href: "/" },
+  { name: "Projects", href: "/projects" },
   { name: "Contact", href: "#contact" },
 ];
 
@@ -43,7 +43,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
           
           {/* Logo */}
-          <a href="#hero" className="flex items-center gap-3 group">
+          <a href="/" className="flex items-center gap-3 group">
             <div className="relative w-15 h-15">
               <Image
                 src="/bernydev/logosinfondo.png"
