@@ -344,29 +344,6 @@ function FloatingOrbs() {
   );
 }
 
-function ProgressIndicator({ scrollYProgress }: { scrollYProgress: MotionValue<number> }) {
-  const scaleY = useTransform(scrollYProgress, [0.2, 0.8], [0, 1]);
-
-  return (
-    <motion.div
-      className="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col items-center gap-3"
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 1 }}
-    >
-      <span className="text-[10px] tracking-[0.2em] text-zinc-600 font-medium rotate-90 origin-center">
-        SCROLL
-      </span>
-      <div className="relative w-px h-24 bg-zinc-800 rounded-full overflow-hidden">
-        <motion.div
-          className="absolute top-0 left-0 right-0 bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 rounded-full"
-          style={{ scaleY, transformOrigin: "top" }}
-        />
-      </div>
-    </motion.div>
-  );
-}
-
 export default function ProjectsSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -396,7 +373,6 @@ export default function ProjectsSection() {
       </motion.div>
 
       <FloatingOrbs />
-      <ProgressIndicator scrollYProgress={scrollYProgress} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <SectionTitle scrollYProgress={scrollYProgress} />

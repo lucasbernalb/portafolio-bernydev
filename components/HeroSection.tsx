@@ -115,7 +115,7 @@ function AnimatedGeometry() {
 
 function Scene3D() {
   return (
-    <div className="absolute right-10 top-1/2 -translate-y-1/2 w-[400px] h-[400px] z-[3] hidden lg:block">
+    <div className="absolute right-38 top-1/2 -translate-y-1/2 w-[400px] h-[400px] z-[3] hidden lg:block">
       <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
         <ambientLight intensity={0.3} />
         <pointLight position={[10, 10, 10]} intensity={1} color="#A855F7" />
