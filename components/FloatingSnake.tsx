@@ -234,7 +234,6 @@ export default function FloatingSnake() {
   const [showBurst, setShowBurst] = useState(false);
   const [depthMode, setDepthMode] = useState(false);
   const [zDepth, setZDepth]       = useState(false);
-  const [hiddenMode, setHiddenMode] = useState(false); // oculta completamente serpiente
 
   // FIX 2: softer spring for organic feel
   const posX    = useMotionValue(0);
@@ -472,13 +471,14 @@ export default function FloatingSnake() {
     if (v >= 0.45 && v < 0.75) {
       moveTo("projects");
     }
-    // Hidden mode: oculta completamente la serpiente cuando NO estamos en hero o contacto
-    // Scroll >= 0.85 = contacto (visible)
-    // Scroll < 0.85 = saliendo de contacto hacia arriba (oculto)
+    // Depth mode: cuando NO estamos en contacto (scroll < 0.85), la serpiente se ve translúcida por detrás
+    // Scroll >= 0.85 = contacto (visible normalmente)
+    // Scroll < 0.85 = en projects/about/hero (depth mode, translúcida)
     if (v < 0.85) {
-      setHiddenMode(true);
+      setDepthMode(true);
+      setZDepth(true);
     } else {
-      setHiddenMode(false);
+      setDepthMode(false);
     }
   });
 
@@ -488,19 +488,19 @@ export default function FloatingSnake() {
     depth:   { opacity: 0.18, filter: "brightness(0.4) blur(0.8px)", scale: 0.85 },
   };
   const depthState = depthMode ? "depth" : "surface";
-  const zHead      = hiddenMode ? -1 : (zDepth ? 1 : 50);
-  const zParticles = hiddenMode ? -1 : (zDepth ? 1 : 48);
+  const zHead      = zDepth ? 1 : 50;
+  const zParticles = zDepth ? 1 : 48;
 
   // ── Render ──
   return (
     <div className="hidden lg:block">
-      {/* Particles anchored to head — hidden when hiddenMode */}
+      {/* Particles anchored to head */}
       <motion.div
         className="fixed pointer-events-none"
-        style={{ left: smoothX, top: smoothY, x: "-50%", y: "-50%", zIndex: zParticles, opacity: hiddenMode ? 0 : 1 }}
+        style={{ left: smoothX, top: smoothY, x: "-50%", y: "-50%", zIndex: zParticles }}
         animate={depthState}
         variants={depthVariants}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
       >
         <SnakeParticles active={isIdle || showBurst} depthMode={depthMode} />
       </motion.div>
