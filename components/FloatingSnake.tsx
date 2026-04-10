@@ -468,7 +468,16 @@ export default function FloatingSnake() {
   }, [moveTo, scrollYProgress]);
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    if (v >= 0.45 && v < 0.75) moveTo("projects");
+    if (v >= 0.45 && v < 0.75) {
+      moveTo("projects");
+    }
+    // Depth mode basado directamente en scroll position
+    if (v >= 0.40 && v <= 0.80) {
+      setDepthMode(true);
+      setZDepth(true);
+    } else if (!isMovingRef.current && !DEPTH_TRANSIT_SECTIONS.includes(currentSectionRef.current)) {
+      setDepthMode(false);
+    }
   });
 
   // ── Depth variants ──
