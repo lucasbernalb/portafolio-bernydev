@@ -123,7 +123,7 @@ const MemoizedProjectCard = memo(function ProjectCard({
         }}
       />
 
-      <div className="relative bg-zinc-950/80 backdrop-blur-xl border border-zinc-800/50 rounded-2xl overflow-hidden transition-all duration-500 group-hover:border-zinc-700/80">
+      <div className="relative bg-zinc-950/80 backdrop-blur-xl border border-zinc-800/50 rounded-2xl overflow-hidden transition-all duration-500 group-hover:border-zinc-700/80 h-full">
         <motion.div
           className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-700"
           style={{
