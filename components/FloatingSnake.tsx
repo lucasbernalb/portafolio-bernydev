@@ -472,10 +472,13 @@ export default function FloatingSnake() {
       moveTo("projects");
     }
     // Depth mode basado directamente en scroll position
-    if (v >= 0.40 && v <= 0.80) {
+    // Si scroll < 0.85 (saliendo de contacto hacia arriba) → desaparecer
+    // Si scroll >= 0.40 y < 0.80 (en projects) → desaparecer
+    // Si scroll >= 0.85 (en contacto) → verse normalmente
+    if (v < 0.85 || (v >= 0.40 && v < 0.80)) {
       setDepthMode(true);
       setZDepth(true);
-    } else if (!isMovingRef.current && !DEPTH_TRANSIT_SECTIONS.includes(currentSectionRef.current)) {
+    } else if (currentSectionRef.current === "contact" || currentSectionRef.current === "hero") {
       setDepthMode(false);
     }
   });
