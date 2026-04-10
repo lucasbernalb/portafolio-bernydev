@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, memo, useMemo, useEffect } from "react";
+import { useRef, useState, useMemo, useEffect } from "react";
 import { motion, useMotionValue, useTransform, useInView, useScroll } from "framer-motion";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
@@ -9,8 +9,8 @@ import Image from "next/image";
 
 const capabilities = [
   {
-    title: "Full Stack Development",
-    description: "Building end-to-end solutions with modern frameworks, clean architecture, and scalable systems.",
+    title: "Desarrollo Full Stack",
+    description: "Soluciones de extremo a extremo con las mejores prácticas de arquitectura y código limpio.",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
@@ -18,8 +18,8 @@ const capabilities = [
     ),
   },
   {
-    title: "AI Integration",
-    description: "Leveraging machine learning and AI APIs to create intelligent, adaptive digital experiences.",
+    title: "Tecnologías de Vanguardia",
+    description: "Implementando herramientas de última generación para crear experiencias digitales que marquen la diferencia.",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -27,8 +27,8 @@ const capabilities = [
     ),
   },
   {
-    title: "Performance Optimization",
-    description: "Creating lightning-fast applications with optimized code, efficient rendering, and minimal load times.",
+    title: "Rendimiento Premium",
+    description: "Aplicaciones ultrarrápidas optimizadas al máximo para que cada interacción se sienta fluida e instantánea.",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -36,8 +36,8 @@ const capabilities = [
     ),
   },
   {
-    title: "Creative Direction",
-    description: "Combining technical expertise with design sensibility to deliver polished, premium results.",
+    title: "Dirección Creativa",
+    description: "Donde la precisión técnica se encuentra con la visión estética para entregar resultados que destacan.",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
@@ -47,23 +47,22 @@ const capabilities = [
 ];
 
 const skills = [
-  { name: "Frontend Engineering", level: "Expert", description: "React, Next.js, animations, UI systems" },
-  { name: "Backend & APIs", level: "Advanced", description: "Node.js, databases, scalable architecture" },
-  { name: "AI Integration", level: "Advanced", description: "LLMs, automation, AI-powered features" },
-  { name: "3D & Interactive", level: "Intermediate", description: "Three.js, WebGL, immersive experiences" },
-  { name: "Performance", level: "Advanced", description: "Optimization, rendering, UX speed" },
-  { name: "Creative Direction", level: "Advanced", description: "Design thinking, branding, visual identity" },
+  { name: "Ingeniería Frontend", level: "Experto", description: "React, Next.js, animaciones, sistemas de UI" },
+  { name: "Backend & APIs", level: "Avanzado", description: "Node.js, bases de datos, arquitectura escalable" },
+  { name: "Stack Moderno", level: "Avanzado", description: "Herramientas de última generación integradas al workflow" },
+  { name: "3D & Interactivo", level: "Intermedio", description: "Three.js, WebGL, experiencias inmersivas" },
+  { name: "Rendimiento", level: "Avanzado", description: "Optimización, renderizado, velocidad UX" },
+  { name: "Dirección Creativa", level: "Avanzado", description: "Diseño, branding, identidad visual" },
 ];
 
 const techStack = [
   { name: "React", category: "Frontend" },
   { name: "Next.js", category: "Frontend" },
-  { name: "TypeScript", category: "Languages" },
+  { name: "TypeScript", category: "Lenguajes" },
   { name: "Node.js", category: "Backend" },
-  { name: "Python", category: "AI/ML" },
-  { name: "Tailwind CSS", category: "Styling" },
-  { name: "Three.js", category: "3D/Graphics" },
-  { name: "PostgreSQL", category: "Database" },
+  { name: "Tailwind CSS", category: "Estilos" },
+  { name: "Three.js", category: "3D/Gráficos" },
+  { name: "PostgreSQL", category: "Base de Datos" },
 ];
 
 function SectionLabel() {
@@ -85,7 +84,7 @@ function SectionLabel() {
         transition={{ duration: 0.6, delay: 0.2 }}
       />
       <span className="text-xs font-medium tracking-[0.3em] uppercase text-violet-400">
-        What I Do
+        Sobre Mí
       </span>
     </motion.div>
   );
@@ -166,7 +165,7 @@ function AvatarContainer() {
         className="absolute -bottom-4 left-1/2 -translate-x-1/2"
       >
         <div className="px-5 py-2.5 rounded-full bg-zinc-900/90 backdrop-blur border border-zinc-800">
-          <span className="text-xs font-medium text-zinc-400">Available for work</span>
+          <span className="text-xs font-medium text-zinc-400">Disponible para trabajar</span>
         </div>
       </motion.div>
     </motion.div>
@@ -209,33 +208,6 @@ function interpolateColor(color1: string, color2: string, t: number): string {
   const c2 = new THREE.Color(color2);
   return "#" + c1.lerp(c2, t).getHexString();
 }
-
-const MemoizedAnimatedShape = memo(function AnimatedShape() {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state: { clock: { elapsedTime: number } }) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.25;
-      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.15) * 0.08;
-    }
-  });
-
-  return (
-    <Float speed={1.5} floatIntensity={0.4}>
-      <mesh ref={meshRef}>
-        <icosahedronGeometry args={[0.5, 0]} />
-        <meshStandardMaterial
-          color="#8B5CF6"
-          emissive="#7C3AED"
-          emissiveIntensity={0.3}
-          roughness={0.25}
-          metalness={0.75}
-          flatShading={true}
-        />
-      </mesh>
-    </Float>
-  );
-});
 
 function SerpentSegment({ x, y, z, radius, colorT, index }: {
   x: number;
@@ -508,15 +480,15 @@ function Headline() {
       className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
     >
       <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
-        Designing and building
+        Diseñando y construyendo
       </span>
       <br />
       <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
-        high-impact digital experiences
+        experiencias digitales que impactan
       </span>
       <br />
       <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
-        powered by AI.
+        con lo último en tecnología.
       </span>
     </motion.h2>
   );
@@ -575,7 +547,6 @@ function CapabilityCard({
 
 function CapabilityGrid() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <div ref={ref} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -734,7 +705,7 @@ function ClosingPhrase() {
       <div className="flex items-start gap-4">
         <div className="w-1 h-full min-h-[48px] bg-gradient-to-b from-violet-500 to-fuchsia-500 rounded-full" />
         <p className="text-lg md:text-xl text-zinc-300 italic leading-relaxed">
-          I don&apos;t just build applications — I craft experiences that stand out.
+          Cada proyecto es una oportunidad para superar expectativas y demostrar que la calidad no es negociable.
         </p>
       </div>
     </motion.div>
@@ -797,17 +768,17 @@ export default function AboutSection() {
               </div>
 
               <div className="space-y-6">
-                <SectionTitle title="What I Do" />
+                <SectionTitle title="Lo Que Hago" />
                 <CapabilityGrid />
               </div>
 
               <div className="space-y-6">
-                <SectionTitle title="Expertise" />
+                <SectionTitle title="Experiencia" />
                 <SkillsGrid />
               </div>
 
               <div className="space-y-6">
-                <SectionTitle title="Technologies" />
+                <SectionTitle title="Tecnologías" />
                 <TechStack />
               </div>
 

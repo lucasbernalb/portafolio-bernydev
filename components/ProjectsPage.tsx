@@ -1,85 +1,60 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const allProjects = [
   {
     id: 1,
-    title: "Nebula Dashboard",
-    category: "Web Application",
-    description: "Real-time analytics platform with immersive data visualization",
-    tags: ["React", "Three.js", "D3.js"],
+    title: "BERNALFORGE",
+    category: "E-Commerce Full Stack",
+    description: "Plataforma de e-commerce para venta de herramientas con gestión de inventario y pedidos",
+    tags: ["Next.js", "Supabase", "TypeScript"],
     gradient: "from-indigo-600 via-purple-600 to-pink-600",
     accent: "#6366f1",
-    demo: "https://example.com",
-    github: "https://github.com",
+    github: "https://github.com/lucasbernalb/ECOMMERCE-BERNALFORGE",
+    demo: "https://bernalforge.vercel.app/",
+    status: null,
+    image: "/proyectos/bernalforge.jpg",
   },
   {
     id: 2,
-    title: "Ethereal Commerce",
-    category: "E-Commerce",
-    description: "Luxury shopping experience with spatial commerce features",
-    tags: ["Next.js", "Stripe", "Sanity"],
-    gradient: "from-emerald-600 via-cyan-600 to-blue-600",
-    accent: "#10b981",
-    demo: "https://example.com",
-    github: "https://github.com",
+    title: "Ameli Pastoreo",
+    category: "Landing Page",
+    description: "Landing page para venta de huevos artesanales con integración a WhatsApp para pedidos",
+    tags: ["React", "Tailwind CSS", "Responsive"],
+    gradient: "from-amber-500 via-orange-500 to-amber-600",
+    accent: "#f59e0b",
+    github: "https://github.com/lucasbernalb/ameli-pastoreo",
+    demo: "https://ameli-pastoreo.vercel.app/",
+    status: null,
+    image: "/proyectos/ameli.jpg",
   },
   {
     id: 3,
-    title: "Sonic Motion",
-    category: "Creative Portfolio",
-    description: "Audio-reactive 3D portfolio pushing creative boundaries",
-    tags: ["WebGL", "Tone.js", "GSAP"],
-    gradient: "from-orange-600 via-red-600 to-pink-600",
-    accent: "#f97316",
-    demo: "https://example.com",
-    github: "https://github.com",
+    title: "Solycell",
+    category: "Tienda Online",
+    description: "Tienda online especializada en reparación de hardware y venta de accesorios tecnológicos",
+    tags: ["Next.js", "MercadoPago", "In Progress"],
+    gradient: "from-emerald-600 via-cyan-600 to-blue-600",
+    accent: "#10b981",
+    github: "https://github.com/lucasbernalb/solycell",
+    demo: "https://solycell.vercel.app/",
+    status: "In Progress",
+    image: "/proyectos/solycell.jpg",
   },
   {
     id: 4,
-    title: "Quantum Social",
-    category: "Social Platform",
-    description: "Next-gen social network with AI-powered interactions",
-    tags: ["GraphQL", "TensorFlow", "Redis"],
+    title: "Reina Artura Andrea",
+    category: "Galería de Arte",
+    description: "Plataforma de venta de cuadros online con catálogo de obras artísticas",
+    tags: ["Next.js", "Supabase", "MercadoPago"],
     gradient: "from-violet-600 via-fuchsia-600 to-purple-600",
     accent: "#8b5cf6",
-    demo: "https://example.com",
-    github: "https://github.com",
-  },
-  {
-    id: 5,
-    title: "Prism Studio",
-    category: "Creative Tool",
-    description: "Browser-based design suite with real-time collaboration",
-    tags: ["Canvas API", "WebRTC", "Supabase"],
-    gradient: "from-rose-600 via-pink-600 to-fuchsia-600",
-    accent: "#f43f5e",
-    demo: "https://example.com",
-    github: "https://github.com",
-  },
-  {
-    id: 6,
-    title: "Nexus AI",
-    category: "AI Product",
-    description: "AI-powered productivity tool for smart task management",
-    tags: ["OpenAI", "React", "Supabase"],
-    gradient: "from-violet-600 via-purple-600 to-indigo-600",
-    accent: "#A855F7",
-    demo: "https://example.com",
-    github: "https://github.com",
-  },
-  {
-    id: 7,
-    title: "Pulse Analytics",
-    category: "Business Intelligence",
-    description: "Real-time business intelligence with beautiful dashboards",
-    tags: ["Next.js", "PostgreSQL", "D3.js"],
-    gradient: "from-cyan-600 via-blue-600 to-indigo-600",
-    accent: "#06b6d4",
-    demo: "https://example.com",
-    github: "https://github.com",
+    github: "https://github.com/lucasbernalb/reinaartura-andrea",
+    demo: "https://reinaartura-andrea.vercel.app/",
+    status: "In Progress",
+    image: "/proyectos/reinaartura.jpg",
   },
 ];
 
@@ -90,16 +65,12 @@ function ProjectCard({
   project: (typeof allProjects)[0];
   index: number;
 }) {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       className="group relative"
     >
       <motion.div
@@ -112,15 +83,34 @@ function ProjectCard({
 
       <div className="relative bg-zinc-950/80 backdrop-blur-xl border border-zinc-800/50 rounded-2xl overflow-hidden transition-all duration-500 group-hover:border-zinc-700/80">
         <div className="relative h-48 overflow-hidden">
-          <div
-            className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-30`}
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            onError={(e) => {
+              // Fallback to gradient if image doesn't exist
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+              const parent = target.parentElement;
+              if (parent) {
+                const gradient = document.createElement('div');
+                gradient.className = `absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-40`;
+                parent.appendChild(gradient);
+              }
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/30 to-transparent" />
 
-          <div className="absolute top-4 left-4">
+          <div className="absolute top-4 left-4 flex items-center gap-2">
             <span className="text-xs font-medium tracking-wider uppercase text-zinc-400">
               {project.category}
             </span>
+            {project.status && (
+              <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                {project.status}
+              </span>
+            )}
           </div>
 
           <div className="absolute bottom-0 left-0 right-0 p-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -194,7 +184,7 @@ export default function ProjectsPage() {
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
           >
             <span className="bg-gradient-to-r from-white via-violet-200 to-white bg-clip-text text-transparent">
-              Projects
+              Proyectos
             </span>
           </motion.h1>
           <motion.p
@@ -203,7 +193,7 @@ export default function ProjectsPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg md:text-xl text-zinc-400"
           >
-            A selection of my work and experiments
+            Una selección de mi trabajo y experimentos
           </motion.p>
         </motion.div>
 

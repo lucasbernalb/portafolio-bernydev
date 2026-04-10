@@ -4,10 +4,10 @@ import { useMemo, useCallback } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 
 const sections = [
-  { id: "hero", label: "Home", position: 0.1 },
-  { id: "about", label: "About", position: 0.35 },
-  { id: "projects", label: "Work", position: 0.65 },
-  { id: "contact", label: "Contact", position: 0.9 },
+  { id: "hero", label: "Inicio", position: 0.1 },
+  { id: "about", label: "Sobre Mí", position: 0.35 },
+  { id: "projects", label: "Proyectos", position: 0.65 },
+  { id: "contact", label: "Contacto", position: 0.9 },
 ];
 
 function TopProgressBar() {

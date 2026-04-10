@@ -3,12 +3,13 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 const navLinks = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "#about" },
-  { name: "Projects", href: "/projects" },
-  { name: "Contact", href: "#contact" },
+  { name: "Inicio", href: "/" },
+  { name: "Sobre Mí", href: "#about" },
+  { name: "Proyectos", href: "/projects" },
+  { name: "Contacto", href: "#contact" },
 ];
 
 export default function Navbar() {
@@ -44,8 +45,8 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
           
           {/* Logo */}
-          <a href="/" className="flex items-center gap-3 group">
-            <div className="relative w-15 h-15">
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative w-14 h-14">
               <Image
                 src="/bernydev/logosinfondo.png"
                 alt="BERNY DEV Logo"
@@ -59,7 +60,7 @@ export default function Navbar() {
             <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-violet-400 via-purple-400 to-violet-300 bg-clip-text text-transparent">
               BERNY DEV
             </span>
-          </a>
+          </Link>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-10">
@@ -81,7 +82,7 @@ export default function Navbar() {
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="md:hidden relative w-10 h-10 flex items-center justify-center"
-            aria-label="Toggle menu"
+            aria-label="Abrir menú"
             aria-expanded={isMobileMenuOpen}
           >
             <div className="flex flex-col gap-1.5">
