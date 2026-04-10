@@ -459,7 +459,7 @@ export default function FloatingSnake() {
           if (p >= 0.45 && p <= 0.75) return;
           moveTo(s);
         },
-        { threshold: 0.1 }
+        { threshold: 0.01 }
       );
       o.observe(el);
       observers.push(o);
