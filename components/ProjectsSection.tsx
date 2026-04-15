@@ -112,8 +112,9 @@ const MemoizedProjectCard = memo(function ProjectCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onMouseMove={handleMouseMove}
+      onClick={() => window.open(project.deploy, "_blank")}
       style={{ rotateX: smoothRotateX, rotateY: smoothRotateY }}
-      className="relative group cursor-pointer perspective-1000"
+      className="relative group cursor-pointer perspective-1000 h-[420px] md:h-[460px]"
     >
       <motion.div
         className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -123,7 +124,7 @@ const MemoizedProjectCard = memo(function ProjectCard({
         }}
       />
 
-      <div className="relative bg-zinc-950/80 backdrop-blur-xl border border-zinc-800/50 rounded-2xl overflow-hidden transition-all duration-500 group-hover:border-zinc-700/80 min-h-[480px]">
+      <div className="relative h-full bg-zinc-950/80 backdrop-blur-xl border border-zinc-800/50 rounded-2xl overflow-hidden transition-all duration-500 group-hover:border-zinc-700/80 flex flex-col">
         <motion.div
           className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-700"
           style={{
@@ -131,7 +132,8 @@ const MemoizedProjectCard = memo(function ProjectCard({
           }}
         />
 
-        <div className="relative h-64 overflow-hidden">
+        {/* Imagen con altura fija */}
+        <div className="relative h-48 flex-shrink-0 overflow-hidden">
           <Image
             src={project.image}
             alt={project.title}
@@ -177,8 +179,9 @@ const MemoizedProjectCard = memo(function ProjectCard({
           />
         </div>
 
-        <div className="relative p-6 space-y-4">
-          <div className="flex items-center justify-between">
+        {/* Contenido con flex-grow para llenar espacio */}
+        <div className="relative p-5 flex flex-col flex-grow">
+          <div className="flex items-center justify-between mb-2">
             <motion.span
               className="text-xs font-medium tracking-widest uppercase text-zinc-500"
               animate={{ x: isHovered ? 5 : 0 }}
@@ -200,7 +203,7 @@ const MemoizedProjectCard = memo(function ProjectCard({
           </div>
 
           <motion.h3
-            className="text-2xl font-bold text-white tracking-tight"
+            className="text-xl font-bold text-white tracking-tight mb-2 flex-shrink-0"
             animate={{ x: isHovered ? 8 : 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
@@ -208,7 +211,7 @@ const MemoizedProjectCard = memo(function ProjectCard({
           </motion.h3>
 
           <motion.p
-            className="text-sm text-zinc-400 leading-relaxed"
+            className="text-sm text-zinc-400 leading-relaxed line-clamp-2 flex-shrink-0"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: isHovered ? 1 : 0.7, y: isHovered ? 0 : 0 }}
             transition={{ duration: 0.4 }}
@@ -216,11 +219,12 @@ const MemoizedProjectCard = memo(function ProjectCard({
             {project.description}
           </motion.p>
 
-          <div className="flex flex-wrap gap-2 pt-2">
-            {project.tags.map((tag, i) => (
+          {/* Tags con altura fija */}
+          <div className="flex flex-wrap gap-2 mt-auto pt-4">
+            {project.tags.slice(0, 3).map((tag, i) => (
               <motion.span
                 key={tag}
-                className="text-[10px] font-medium px-3 py-1.5 rounded-full bg-zinc-800/50 text-zinc-400 border border-zinc-700/30"
+                className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-zinc-800/50 text-zinc-400 border border-zinc-700/30 flex-shrink-0"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: isHovered ? 1 : 0.6, y: isHovered ? 0 : 0 }}
                 transition={{ duration: 0.3, delay: i * 0.05 }}
@@ -231,7 +235,7 @@ const MemoizedProjectCard = memo(function ProjectCard({
             ))}
             {project.status && (
               <motion.span
-                className="text-[10px] font-medium px-3 py-1.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30 flex-shrink-0"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
@@ -241,7 +245,8 @@ const MemoizedProjectCard = memo(function ProjectCard({
             )}
           </div>
 
-          <div className="flex items-center gap-3 pt-4 border-t border-zinc-800/50">
+          {/* Links con altura fija */}
+          <div className="flex items-center gap-4 pt-3 mt-3 border-t border-zinc-800/50 flex-shrink-0">
             <a
               href={project.github}
               target="_blank"
@@ -284,7 +289,7 @@ function SectionTitle({ scrollYProgress }: { scrollYProgress: MotionValue<number
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true });
   const y = useTransform(scrollYProgress, [0, 0.5], [0, -50]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.37], [1, 0]);
 
   return (
     <motion.div ref={ref} style={{ y, opacity }} className="text-center mb-20">
@@ -438,7 +443,7 @@ export default function ProjectsSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <SectionTitle scrollYProgress={scrollYProgress} />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {projects.slice(0, 4).map((project, index) => (
             <ParallaxLayer
               key={project.id}

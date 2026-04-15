@@ -44,9 +44,6 @@ portfolio-pro/
 │   ├── ProjectsPage.tsx
 │   ├── ContactSection.tsx
 │   ├── ScrollProgress.tsx
-│   ├── FloatingSnake.tsx       # ← serpiente flotante global
-│   ├── FloatingSnakeWrapper.tsx
-│   ├── ClientLayout.tsx
 │   └── BodyWrapper.tsx
 └── public/
     └── bernydev/
@@ -85,12 +82,7 @@ Orden de renderizado:
 - `id="hero"`
 - Background image con gradients overlay
 - Glow orbs decorativos
-- Serpiente inline (solo en `lg:`): `SnakeHead` + `SnakeBody` (12 segmentos)
-  - Ojos siguen el cursor (`mouseX`/`mouseY` normalizados)
-  - Lengua: ángulo y longitud basados en posición X del mouse
-- Parallax con `useScroll()`: serpiente hace parallax `y: -scrollY * 80`
 - FM: h1 `y:30→0`, p `y:20→0`, CTA `whileHover scale:1.05`
-- Scroll: serpiente fade-out entre 20%–50% del scroll
 
 ### `components/AboutSection.tsx`
 - `id="about"`
@@ -127,30 +119,6 @@ Orden de renderizado:
 
 ---
 
-## Componente Serpiente Flotante (Global)
-
-**Archivo:** `components/FloatingSnake.tsx`  
-**Wrapper:** `components/FloatingSnakeWrapper.tsx` (dynamic import, `ssr: false`)  
-**Montado en:** `components/BodyWrapper.tsx` → renderizado en `app/layout.tsx`
-
-### Cómo está construida:
-- Fixed position, `z-index` alto, hidden en mobile (solo `lg:`)
-- **Subcomponentes internos:**
-  - `SnakeParticles`: emite hasta 8 partículas cada 600ms durante idle (`y:[y, y-80]`, 3s, fade-out)
-  - `SnakeHead`: sigue el mouse con `useSpring` (stiffness 150, damping 20); ojos con iris clamped ±3px
-  - `SnakeBody`: 12 segmentos, `y:[0,-amplitude,0]`; amplitud 12px moving / 8px idle
-- **Posición por sección** (basado en `scrollY` relativo a `window.innerHeight`):
-  - Hero (0–0.3×vh): `65%, 45%`
-  - About (0.3–1.3×vh): `80%, 30%`
-  - Projects (1.3–2.3×vh): `15%, 60%`
-  - Contact (>2.3×vh): `50%, 75%`
-- Movimiento: `useMotionValue` para posX/posY + `useSpring` (stiffness 60, damping 18)
-- Estado `isMoving`: activo 1000ms tras cambio de sección → afecta velocidad de animación del body
-- Estado `lookDirection`: 'left' | 'right' | 'idle' (basado en delta X del mouse)
-- Idle timer: 2000ms sin movimiento → `isIdle = true` → activa partículas
-
----
-
 ## IDs de Secciones
 
 | Sección | ID | Posición en ScrollProgress |
@@ -184,8 +152,6 @@ transition={{ duration: 0.6, delay: 0.2 }}
 ### Spring suave (progress, position)
 ```tsx
 useSpring(value, { stiffness: 100, damping: 30 }) // progress bar
-useSpring(value, { stiffness: 60, damping: 18 })  // snake position
-useSpring(value, { stiffness: 150, damping: 20 }) // snake head
 ```
 
 ### Float infinito
@@ -210,7 +176,6 @@ style={{ rotateX, rotateY, transformPerspective: 1000 }}
 - Nombres: PascalCase para componentes, camelCase para estado/handlers
 - Tailwind v4: sin `tailwind.config.ts` — configuración via CSS (`@import "tailwindcss"`)
 - CSS vars en `globals.css`: `--background`, `--surface`, `--primary`, `--secondary`, `--glow`
-- Dynamic import con `ssr: false` para todo lo relacionado a `FloatingSnake` (evita hydration mismatch)
 - `useInView` de Framer Motion para entrada de secciones (no IntersectionObserver manual)
 - `useScroll()` + `useTransform()` para parallax, siempre con `target` ref cuando es local
 
@@ -236,8 +201,7 @@ Glassmorphism: `bg-white/5 backdrop-blur-sm border border-white/10`
 ## Cosas a NO Hacer
 
 1. **No agregar `id="projects"` a ProjectsSection** sin actualizar ScrollProgress — rompe la sincronización.
-2. **No remover `ssr: false`** del dynamic import de FloatingSnake — genera hydration error en producción.
-3. **No usar `"use server"`** en ningún componente actual — toda la lógica es client-side.
+2. **No usar `"use server"`** en ningún componente actual — toda la lógica es client-side.
 4. **No usar `tailwind.config.ts`** — Tailwind v4 usa CSS-first config, no archivo JS/TS.
 5. **No importar Three.js directamente** sin usar React Three Fiber — los hooks de `useFrame`/`useThree` requieren el canvas de R3F.
 6. **No hacer `next build`** después de cambios (regla global del usuario).

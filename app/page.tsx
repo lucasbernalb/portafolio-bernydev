@@ -4,18 +4,19 @@ import AboutSection from "@/components/AboutSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import ContactSection from "@/components/ContactSection";
 import ScrollProgress from "@/components/ScrollProgress";
+import AnimatedContent from "@/components/AnimatedContent";
 
 export default function Home() {
   return (
     <>
       <ScrollProgress />
       <Navbar />
-      <main>
+      <AnimatedContent>
         <HeroSection />
         <AboutSection />
         <ProjectsSection />
         <ContactSection />
-      </main>
+      </AnimatedContent>
     </>
   );
 }

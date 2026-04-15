@@ -4,12 +4,22 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
+const mainTitle = "BERNY";
+const subTitle = "DEV";
+const subtitleText = "Full Stack Developer & AI. ";
+const subtitleHighlight = "Desarrollo rápido. Diseño inteligente. Tu idea cobra vida.";
+const glitchChars = "!@#$%&*%§<>?/|\\";
+
 export default function HeroSection() {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [titleVisible, setTitleVisible] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setIsLoaded(true), 100);
+    setIsLoaded(true);
+    setTimeout(() => setTitleVisible(true), 300);
   }, []);
+
+  const subtitleLetters = subtitleText.split("");
 
   return (
     <section
@@ -54,25 +64,209 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={isLoaded ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-6xl md:text-8xl font-black leading-[0.9]"
+              className="text-6xl md:text-8xl font-black leading-[0.9] relative"
             >
-              <span className="bg-gradient-to-b from-white to-violet-200 bg-clip-text text-transparent">
-                BERNY
-              </span>
+              {/* BERNY con Glitch Mejorado */}
+              <motion.span
+                className="bg-gradient-to-b from-white to-violet-200 bg-clip-text text-transparent relative inline-block"
+                initial={{ opacity: 0 }}
+                animate={titleVisible ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+              >
+                {mainTitle}
+              </motion.span>
+
+              {/* Capa Glitch Cyan con Skew */}
+              <motion.span
+                className="absolute left-0 top-0 bg-gradient-to-b from-cyan-300 to-cyan-500 bg-clip-text text-transparent"
+                initial={{ opacity: 0, x: 0, skewX: 0 }}
+                animate={titleVisible ? {
+                  opacity: [0, 0.9, 0, 0.5, 0, 0.7, 0],
+                  x: [0, -4, 2, -2, 0],
+                  skewX: [0, -5, 3, -2, 0],
+                  transition: {
+                    duration: 0.6,
+                    times: [0, 0.2, 0.4, 0.6, 1],
+                    repeat: Infinity,
+                    repeatDelay: 5,
+                  }
+                } : {}}
+                aria-hidden="true"
+              >
+                {mainTitle}
+              </motion.span>
+
+              {/* Capa Glitch Magenta con Skew */}
+              <motion.span
+                className="absolute left-0 top-0 bg-gradient-to-b from-pink-300 to-pink-500 bg-clip-text text-transparent"
+                initial={{ opacity: 0, x: 0, skewX: 0 }}
+                animate={titleVisible ? {
+                  opacity: [0, 0.8, 0, 0.4, 0, 0.6, 0],
+                  x: [0, 4, -2, 2, 0],
+                  skewX: [0, 5, -3, 2, 0],
+                  transition: {
+                    duration: 0.6,
+                    times: [0, 0.2, 0.4, 0.6, 1],
+                    repeat: Infinity,
+                    repeatDelay: 5,
+                    delay: 0.03,
+                  }
+                } : {}}
+                aria-hidden="true"
+              >
+                {mainTitle}
+              </motion.span>
+
+              {/* Caracteres Random Glitch */}
+              <motion.span
+                className="absolute left-0 top-0 bg-gradient-to-b from-white to-zinc-300 bg-clip-text text-transparent"
+                initial={{ opacity: 0 }}
+                animate={titleVisible ? {
+                  opacity: [0, 0, 0.4, 0],
+                  transition: {
+                    duration: 0.15,
+                    repeat: Infinity,
+                    repeatDelay: 5,
+                  }
+                } : {}}
+                aria-hidden="true"
+              >
+                {mainTitle.split("").map((char, i) => (
+                  <motion.span
+                    key={i}
+                    animate={titleVisible ? {
+                      opacity: [0, 1, 0],
+                      y: [0, -2, 0],
+                    } : {}}
+                    transition={{
+                      duration: 0.1,
+                      repeat: Infinity,
+                      repeatDelay: 5 + i * 0.02,
+                    }}
+                  >
+                    {glitchChars[i % glitchChars.length]}
+                  </motion.span>
+                ))}
+              </motion.span>
+
               <br />
-              <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
-                DEV
-              </span>
+
+              {/* DEV con Glitch Mejorado */}
+              <motion.span
+                className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent relative inline-block"
+                initial={{ opacity: 0 }}
+                animate={titleVisible ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 0.3, delay: 0.4 }}
+              >
+                {subTitle}
+              </motion.span>
+
+              {/* Capa Glitch Cyan para DEV */}
+              <motion.span
+                className="absolute left-0 top-[1em] bg-gradient-to-r from-cyan-300 to-cyan-500 bg-clip-text text-transparent"
+                initial={{ opacity: 0, x: 0, skewX: 0 }}
+                animate={titleVisible ? {
+                  opacity: [0, 0.9, 0, 0.5, 0, 0.7, 0],
+                  x: [0, -4, 2, -2, 0],
+                  skewX: [0, -5, 3, -2, 0],
+                  transition: {
+                    duration: 0.6,
+                    times: [0, 0.2, 0.4, 0.6, 1],
+                    repeat: Infinity,
+                    repeatDelay: 5,
+                    delay: 0.2,
+                  }
+                } : {}}
+                aria-hidden="true"
+              >
+                {subTitle}
+              </motion.span>
+
+              {/* Capa Glitch Magenta para DEV */}
+              <motion.span
+                className="absolute left-0 top-[1em] bg-gradient-to-r from-pink-300 to-pink-500 bg-clip-text text-transparent"
+                initial={{ opacity: 0, x: 0, skewX: 0 }}
+                animate={titleVisible ? {
+                  opacity: [0, 0.8, 0, 0.4, 0, 0.6, 0],
+                  x: [0, 4, -2, 2, 0],
+                  skewX: [0, 5, -3, 2, 0],
+                  transition: {
+                    duration: 0.6,
+                    times: [0, 0.2, 0.4, 0.6, 1],
+                    repeat: Infinity,
+                    repeatDelay: 5,
+                    delay: 0.23,
+                  }
+                } : {}}
+                aria-hidden="true"
+              >
+                {subTitle}
+              </motion.span>
+
+              {/* Caracteres Random para DEV */}
+              <motion.span
+                className="absolute left-0 top-[1em] bg-gradient-to-r from-violet-200 to-purple-300 bg-clip-text text-transparent"
+                initial={{ opacity: 0 }}
+                animate={titleVisible ? {
+                  opacity: [0, 0, 0.4, 0],
+                  transition: {
+                    duration: 0.15,
+                    repeat: Infinity,
+                    repeatDelay: 5,
+                    delay: 0.1,
+                  }
+                } : {}}
+                aria-hidden="true"
+              >
+                {subTitle.split("").map((char, i) => (
+                  <motion.span
+                    key={i}
+                    animate={titleVisible ? {
+                      opacity: [0, 1, 0],
+                      y: [0, -2, 0],
+                    } : {}}
+                    transition={{
+                      duration: 0.1,
+                      repeat: Infinity,
+                      repeatDelay: 5.1 + i * 0.02,
+                    }}
+                  >
+                    {glitchChars[i % glitchChars.length]}
+                  </motion.span>
+                ))}
+              </motion.span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={isLoaded ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg text-zinc-400"
+              className="text-lg text-zinc-400 overflow-hidden"
             >
-              Desarrollador Full Stack creando experiencias web modernas con lo{" "}
-              <span className="text-violet-400">último en tecnología</span>
+              {subtitleLetters.map((letter, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0 }}
+                  animate={titleVisible ? { opacity: 1 } : {}}
+                  transition={{
+                    delay: (mainTitle.length + subTitle.length + 5 + index) * 0.033,
+                    duration: 0.01,
+                  }}
+                >
+                  {letter}
+                </motion.span>
+              ))}
+              <motion.span
+                className="text-violet-400"
+                initial={{ opacity: 0 }}
+                animate={titleVisible ? { opacity: 1 } : {}}
+                transition={{
+                  delay: (mainTitle.length + subTitle.length + 5 + subtitleText.length) * 0.033,
+                  duration: 0.3,
+                }}
+              >
+                {subtitleHighlight}
+              </motion.span>
             </motion.p>
 
             <motion.div
@@ -99,7 +293,7 @@ export default function HeroSection() {
             </motion.div>
           </div>
 
-          {/* Spacer — FloatingSnake lives here visually */}
+          {/* Spacer */}
           <div className="flex-1 hidden lg:block" />
         </div>
       </div>

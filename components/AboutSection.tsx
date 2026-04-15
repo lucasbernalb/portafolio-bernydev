@@ -164,7 +164,63 @@ function AvatarContainer() {
         transition={{ delay: 0.5 }}
         className="absolute -bottom-4 left-1/2 -translate-x-1/2"
       >
-        <div className="px-5 py-2.5 rounded-full bg-zinc-900/90 backdrop-blur border border-zinc-800">
+        {/* Badge principal */}
+        <div className="px-5 py-2.5 rounded-full bg-zinc-900/90 backdrop-blur border border-zinc-800 flex items-center gap-2">
+          {/* Punto verde con glow y partículas */}
+          <div className="relative">
+            {/* Partículas flotantes */}
+            <motion.div
+              className="absolute w-1 h-1 rounded-full bg-emerald-400"
+              animate={{
+                x: [-4, -6, -4],
+                y: [-2, -4, -2],
+                opacity: [0.8, 0, 0.8],
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+            />
+            <motion.div
+              className="absolute w-1 h-1 rounded-full bg-emerald-400"
+              animate={{
+                x: [4, 6, 4],
+                y: [2, 4, 2],
+                opacity: [0.8, 0, 0.8],
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: 0.5 }}
+            />
+            <motion.div
+              className="absolute w-0.5 h-0.5 rounded-full bg-emerald-300"
+              animate={{
+                x: [-2, -4, -2],
+                y: [3, 5, 3],
+                opacity: [0.6, 0, 0.6],
+              }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeOut", delay: 1 }}
+            />
+            <motion.div
+              className="absolute w-0.5 h-0.5 rounded-full bg-emerald-300"
+              animate={{
+                x: [2, 4, 2],
+                y: [-3, -5, -3],
+                opacity: [0.6, 0, 0.6],
+              }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeOut", delay: 1.5 }}
+            />
+            
+            {/* Punto central verde */}
+            <motion.div
+              className="w-2.5 h-2.5 rounded-full bg-emerald-400"
+              animate={{
+                boxShadow: [
+                  "0 0 8px rgba(52, 211, 153, 0.8), 0 0 16px rgba(52, 211, 153, 0.4)",
+                  "0 0 12px rgba(52, 211, 153, 1), 0 0 24px rgba(52, 211, 153, 0.6)",
+                  "0 0 8px rgba(52, 211, 153, 0.8), 0 0 16px rgba(52, 211, 153, 0.4)",
+                ],
+                scale: [1, 1.15, 1],
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
+          
           <span className="text-xs font-medium text-zinc-400">Disponible para trabajar</span>
         </div>
       </motion.div>
@@ -394,19 +450,17 @@ function SheddingParticles() {
 function AnimatedSerpent() {
   const groupRef = useRef<THREE.Group>(null);
 
+  // Rotación muy sutil siguiendo al cursor
   useFrame((state: { clock: { elapsedTime: number } }) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.08;
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
     }
   });
 
   return (
     <group ref={groupRef}>
-      <Float speed={0.5} floatIntensity={0.1}>
-        <SerpentChain />
-        <EnergyTrail />
-        <SheddingParticles />
-      </Float>
+      <SerpentChain />
+      <EnergyTrail />
     </group>
   );
 }
@@ -480,15 +534,15 @@ function Headline() {
       className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
     >
       <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
-        Diseñando y construyendo
+        Soy Berny.
       </span>
       <br />
       <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
-        experiencias digitales que impactan
+        Artista de corazón, developer por pasión.
       </span>
       <br />
       <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
-        con lo último en tecnología.
+        Cada web que hago es una pieza irrepetible.
       </span>
     </motion.h2>
   );
@@ -705,7 +759,7 @@ function ClosingPhrase() {
       <div className="flex items-start gap-4">
         <div className="w-1 h-full min-h-[48px] bg-gradient-to-b from-violet-500 to-fuchsia-500 rounded-full" />
         <p className="text-lg md:text-xl text-zinc-300 italic leading-relaxed">
-          Cada proyecto es una oportunidad para superar expectativas y demostrar que la calidad no es negociable.
+          Diseñar es mi esencia, programar es mi herramienta. Cada línea de código es una decisión creativa.
         </p>
       </div>
     </motion.div>
@@ -778,8 +832,12 @@ export default function AboutSection() {
               </div>
 
               <div className="space-y-6">
-                <SectionTitle title="Tecnologías" />
-                <TechStack />
+                <SectionTitle title="Mi Filosofía" />
+                <div className="p-6 rounded-xl bg-zinc-900/50 backdrop-blur-sm border border-zinc-800">
+                  <p className="text-zinc-300 leading-relaxed">
+                    <span className="text-violet-400 font-medium">Imagino. Adapto.</span> No busco lo genérico — cada web que hago tiene identidad propia, es una pieza irrepetible.
+                  </p>
+                </div>
               </div>
 
               <ClosingPhrase />
