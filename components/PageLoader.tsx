@@ -11,13 +11,17 @@ interface PageLoaderProps {
 export default function PageLoader({ onComplete }: PageLoaderProps) {
   const [phase, setPhase] = useState<"initial" | "logo-in" | "fade-out">("initial");
   const [isComplete, setIsComplete] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  // Inicializar directamente con el valor del media query (lazy initializer)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+    return false;
+  });
 
-  // Detectar preferencia de movimiento reducido
+  // Solo suscribirse a cambios del media query (no re-inicializar)
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(mediaQuery.matches);
-
     const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
     mediaQuery.addEventListener("change", handler);
     return () => mediaQuery.removeEventListener("change", handler);
