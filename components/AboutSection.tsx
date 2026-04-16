@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useMemo, useEffect } from "react";
+import { useRef, useState, useMemo } from "react";
 import { motion, useMotionValue, useTransform, useInView, useScroll } from "framer-motion";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
@@ -52,16 +52,6 @@ const skills = [
   { name: "3D & Interactivo", level: "Intermedio", description: "Three.js, WebGL, experiencias inmersivas" },
   { name: "Rendimiento", level: "Avanzado", description: "Optimización, renderizado, velocidad UX" },
   { name: "Dirección Creativa", level: "Avanzado", description: "Diseño, branding, identidad visual" },
-];
-
-const techStack = [
-  { name: "React", category: "Frontend" },
-  { name: "Next.js", category: "Frontend" },
-  { name: "TypeScript", category: "Lenguajes" },
-  { name: "Node.js", category: "Backend" },
-  { name: "Tailwind CSS", category: "Estilos" },
-  { name: "Three.js", category: "3D/Gráficos" },
-  { name: "PostgreSQL", category: "Base de Datos" },
 ];
 
 function SectionLabel() {

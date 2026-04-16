@@ -20,28 +20,30 @@ interface LoaderProviderProps {
 }
 
 export default function LoaderProvider({ children }: LoaderProviderProps) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isReady, setIsReady] = useState(false);
-  // Lazy init para evitar hydration mismatch - solo checkea window en cliente
-  const [mounted, setMounted] = useState(() => typeof window !== "undefined");
+  // Lazy initializers — leen valores al momento de la primera ejecución,
+  // sin setState en effects (evita el error react-hooks/set-state-in-effect)
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const [isLoading, setIsLoading] = useState(!prefersReducedMotion);
+  const [isReady, setIsReady] = useState(prefersReducedMotion);
+  const [mounted, setMounted] = useState(false);
+
+  // Solo marca mounted — no modifica isLoading/isReady aquí
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Suscribirse a cambios de prefers-reduced-motion
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    
     const handleChange = (e: MediaQueryListEvent) => {
       if (e.matches) {
         setIsLoading(false);
         setIsReady(true);
       }
     };
-
-    // Si ya prefiere reduced motion al cargar, saltamos el loader
-    if (mediaQuery.matches) {
-      setIsLoading(false);
-      setIsReady(true);
-    }
-
     mediaQuery.addEventListener("change", handleChange);
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
@@ -51,7 +53,6 @@ export default function LoaderProvider({ children }: LoaderProviderProps) {
     setTimeout(() => setIsReady(true), 100);
   };
 
-  // Valor del contexto
   const contextValue: LoaderContextType = {
     isLoading: mounted && isLoading,
     isReady: mounted && isReady,
@@ -59,12 +60,9 @@ export default function LoaderProvider({ children }: LoaderProviderProps) {
 
   return (
     <LoaderContext.Provider value={contextValue}>
-      {/* Loader animado */}
       {mounted && isLoading && (
         <PageLoader onComplete={handleLoaderComplete} />
       )}
-
-      {/* Contenido principal */}
       {children}
     </LoaderContext.Provider>
   );
