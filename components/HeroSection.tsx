@@ -11,12 +11,12 @@ const subtitleHighlight = "Desarrollo rápido. Diseño inteligente. Tu idea cobr
 const glitchChars = "!@#$%&*%§<>?/|\\";
 
 export default function HeroSection() {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded] = useState(true); // Siempre true - animaciones start on mount
   const [titleVisible, setTitleVisible] = useState(false);
 
   useEffect(() => {
-    setIsLoaded(true);
-    setTimeout(() => setTitleVisible(true), 300);
+    const timer = setTimeout(() => setTitleVisible(true), 300);
+    return () => clearTimeout(timer);
   }, []);
 
   const subtitleLetters = subtitleText.split("");

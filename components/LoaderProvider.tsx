@@ -22,31 +22,34 @@ interface LoaderProviderProps {
 export default function LoaderProvider({ children }: LoaderProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [isReady, setIsReady] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  // Lazy init para evitar hydration mismatch - solo checkea window en cliente
+  const [mounted, setMounted] = useState(() => typeof window !== "undefined");
 
-  // Evitar hydration mismatch
+  // Suscribirse a cambios de prefers-reduced-motion
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    
+    const handleChange = (e: MediaQueryListEvent) => {
+      if (e.matches) {
+        setIsLoading(false);
+        setIsReady(true);
+      }
+    };
 
-  // Reducir movimiento si el usuario prefiere
-  const prefersReducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  const handleLoaderComplete = () => {
-    setIsLoading(false);
-    // Pequeño delay para que la transición sea suave
-    setTimeout(() => setIsReady(true), 100);
-  };
-
-  // Si prefiere movimiento reducido, saltamos el loader
-  useEffect(() => {
-    if (prefersReducedMotion) {
+    // Si ya prefiere reduced motion al cargar, saltamos el loader
+    if (mediaQuery.matches) {
       setIsLoading(false);
       setIsReady(true);
     }
-  }, [prefersReducedMotion]);
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  const handleLoaderComplete = () => {
+    setIsLoading(false);
+    setTimeout(() => setIsReady(true), 100);
+  };
 
   // Valor del contexto
   const contextValue: LoaderContextType = {

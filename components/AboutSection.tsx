@@ -3,7 +3,6 @@
 import { useRef, useState, useMemo, useEffect } from "react";
 import { motion, useMotionValue, useTransform, useInView, useScroll } from "framer-motion";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float } from "@react-three/drei";
 import * as THREE from "three";
 import Image from "next/image";
 
@@ -249,16 +248,6 @@ function VisualConnector() {
   );
 }
 
-interface SheddingParticle {
-  id: number;
-  x: number;
-  y: number;
-  velocityY: number;
-  velocityX: number;
-  life: number;
-  scale: number;
-}
-
 function interpolateColor(color1: string, color2: string, t: number): string {
   const c1 = new THREE.Color(color1);
   const c2 = new THREE.Color(color2);
@@ -390,60 +379,6 @@ function EnergyTrail() {
         depthWrite={false}
       />
     </points>
-  );
-}
-
-function SheddingParticles() {
-  const [particles, setParticles] = useState<SheddingParticle[]>([]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setParticles(prev => {
-        const newParticle: SheddingParticle = {
-          id: Date.now() + Math.random(),
-          x: (Math.random() - 0.5) * 0.25,
-          y: (Math.random() - 0.5) * 2,
-          velocityY: 0.03 + Math.random() * 0.02,
-          velocityX: (Math.random() - 0.5) * 0.01,
-          life: 1,
-          scale: 0.04 + Math.random() * 0.03,
-        };
-        return [...prev.slice(-15), newParticle];
-      });
-    }, 600);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useFrame((_, delta) => {
-    setParticles(prev =>
-      prev
-        .map(p => ({
-          ...p,
-          y: p.y + p.velocityY * delta * 60,
-          x: p.x + p.velocityX * delta * 60,
-          life: p.life - delta * 0.4,
-          scale: p.scale * (0.98 + delta * 0.3),
-        }))
-        .filter(p => p.life > 0)
-    );
-  });
-
-  return (
-    <>
-      {particles.map(p => (
-        <mesh key={p.id} position={[p.x, p.y, 0.05]}>
-          <sphereGeometry args={[p.scale, 6, 6]} />
-          <meshStandardMaterial
-            color="#c084fc"
-            emissive="#c084fc"
-            emissiveIntensity={0.6}
-            transparent
-            opacity={p.life}
-          />
-        </mesh>
-      ))}
-    </>
   );
 }
 
@@ -702,41 +637,6 @@ function SkillsGrid() {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {skills.map((skill, index) => (
         <SkillCard key={skill.name} skill={skill} index={index} />
-      ))}
-    </div>
-  );
-}
-
-function TechBadge({ name, index }: { name: string; index: number }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-30px" });
-
-  return (
-    <motion.span
-      ref={ref}
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={isInView ? { opacity: 1, scale: 1 } : {}}
-      transition={{
-        duration: 0.4,
-        delay: 0.5 + index * 0.05,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      }}
-      whileHover={{
-        backgroundColor: "rgba(168, 85, 247, 0.2)",
-        borderColor: "rgba(168, 85, 247, 0.3)",
-      }}
-      className="px-4 py-2 rounded-full text-sm font-medium text-zinc-300 bg-zinc-800/50 border border-zinc-700/50 backdrop-blur-sm transition-all duration-200 cursor-default"
-    >
-      {name}
-    </motion.span>
-  );
-}
-
-function TechStack() {
-  return (
-    <div className="flex flex-wrap gap-3">
-      {techStack.map((tech, index) => (
-        <TechBadge key={tech.name} name={tech.name} index={index} />
       ))}
     </div>
   );
