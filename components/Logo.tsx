@@ -43,13 +43,9 @@ export default function Logo({
         />
       </motion.div>
 
-      {/* Text — separate from image, no blend mode interference */}
+      {/* Text — separate from image */}
       <div className="relative">
-        <h1 className="text-xl font-bold tracking-tight">
-          <span
-            className="bg-gradient-to-r from-violet-400 via-purple-400 to-violet-300 gradient-text"
-            aria-label={titleText}
-          >
+        <h1 className="text-xl font-bold tracking-tight text-violet-400">
           {letters.map((letter, index) => (
             <motion.span
               key={index}
@@ -64,10 +60,10 @@ export default function Logo({
               {letter === " " ? "\u00A0" : letter}
             </motion.span>
           ))}
-        </span>
+        </h1>
         {showCursor && (
           <motion.span
-            className="inline-block w-[3px] h-6 ml-1 bg-gradient-to-b from-violet-400 to-purple-400 align-middle"
+            className="inline-block w-[3px] h-6 ml-1 bg-violet-400 align-middle"
             initial={{ opacity: 0 }}
             animate={{ opacity: [1, 0, 1] }}
             transition={{
@@ -77,7 +73,6 @@ export default function Logo({
             }}
           />
         )}
-      </h1>
       </div>
     </Link>
   );
