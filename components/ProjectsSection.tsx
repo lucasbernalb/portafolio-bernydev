@@ -322,12 +322,13 @@ function SectionTitle({ scrollYProgress }: { scrollYProgress: MotionValue<number
         transition={{ duration: 0.8, delay: 0.1 }}
         className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter"
       >
-        <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
+        <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
           Proyectos
         </span>
         <br />
         <motion.span
           className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
+          style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
           initial={{ x: -50, opacity: 0 }}
           animate={isInView ? { x: 0, opacity: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.3 }}

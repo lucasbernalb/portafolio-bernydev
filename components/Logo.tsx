@@ -44,12 +44,13 @@ export default function Logo({
       </motion.div>
 
       <h1 className="text-xl font-bold tracking-tight">
-        <motion.span
-          className="bg-gradient-to-r from-violet-400 via-purple-400 to-violet-300 bg-clip-text text-transparent"
-          initial={animate ? "hidden" : false}
-          animate={animate ? "visible" : false}
-          aria-label={titleText}
-        >
+          <motion.span
+            className="bg-gradient-to-r from-violet-400 via-purple-400 to-violet-300 bg-clip-text text-transparent"
+            style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+            initial={animate ? "hidden" : false}
+            animate={animate ? "visible" : false}
+            aria-label={titleText}
+          >
           {letters.map((letter, index) => (
             <motion.span
               key={index}
