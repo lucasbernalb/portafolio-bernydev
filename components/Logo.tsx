@@ -60,19 +60,19 @@ export default function Logo({
               {letter === " " ? "\u00A0" : letter}
             </motion.span>
           ))}
+          {showCursor && (
+            <motion.span
+              className="inline-block w-[3px] h-6 ml-1 bg-violet-400 align-middle"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [1, 0, 1] }}
+              transition={{
+                duration: 0.8,
+                repeat: Infinity,
+                delay: letters.length * 0.24 + 0.8,
+              }}
+            />
+          )}
         </h1>
-        {showCursor && (
-          <motion.span
-            className="inline-block w-[3px] h-6 ml-1 bg-violet-400 align-middle"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [1, 0, 1] }}
-            transition={{
-              duration: 0.8,
-              repeat: Infinity,
-              delay: letters.length * 0.24 + 0.8,
-            }}
-          />
-        )}
       </div>
     </Link>
   );
