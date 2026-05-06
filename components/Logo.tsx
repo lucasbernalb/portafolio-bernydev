@@ -24,9 +24,10 @@ export default function Logo({
 }: LogoProps) {
   return (
     <Link href="/" className={`flex items-center gap-3 group ${className}`}>
+      {/* Logo image — isolated from text */}
       <motion.div
         layoutId={layoutId}
-        className="relative w-14 h-14"
+        className="relative w-14 h-14 flex-shrink-0"
         transition={{
           type: "spring",
           stiffness: 200,
@@ -38,12 +39,13 @@ export default function Logo({
           alt="BERNY DEV Logo"
           fill
           className={`object-contain ${imageClassName}`}
-          style={{ mixBlendMode: "lighten" }}
           priority
         />
       </motion.div>
 
-      <h1 className="text-xl font-bold tracking-tight">
+      {/* Text — separate from image, no blend mode interference */}
+      <div className="relative">
+        <h1 className="text-xl font-bold tracking-tight">
           <span
             className="bg-gradient-to-r from-violet-400 via-purple-400 to-violet-300 gradient-text"
             aria-label={titleText}
@@ -76,6 +78,7 @@ export default function Logo({
           />
         )}
       </h1>
+      </div>
     </Link>
   );
 }
