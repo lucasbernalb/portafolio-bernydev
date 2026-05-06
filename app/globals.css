@@ -194,3 +194,32 @@ body::before {
     transform: translateY(0);
   }
 }
+
+/* Gradient text fix for Safari iOS
+   Safari requires -webkit-background-clip: text to render gradient text.
+   text-transparent makes text invisible if the clip fails, so we force it
+   with !important on the webkit prefix. */
+.gradient-text {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Gradient text - Safari iOS fix
+   Safari needs -webkit prefixes with !important to render gradient text.
+   Without this, text becomes invisible because text-transparent hides the
+   fallback color and Safari ignores inline webkit styles in some contexts. */
+.gradient-text {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text;
+}
+
+/* Gradient text - Safari iOS fix
+   Safari needs -webkit prefixes with !important to render gradient text.
+   Without this, text becomes invisible because text-transparent hides the
+   fallback color and Safari ignores inline webkit styles in some contexts. */
+.gradient-text {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text;
+}

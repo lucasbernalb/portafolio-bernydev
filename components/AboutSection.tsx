@@ -458,15 +458,15 @@ function Headline() {
       transition={{ duration: 0.8, delay: 0.2 }}
       className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
     >
-      <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+      <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 gradient-text">
         Soy Berny.
       </span>
       <br />
-      <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+      <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 gradient-text">
         Artista de corazón, developer por pasión.
       </span>
       <br />
-      <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+      <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 gradient-text">
         Cada web que hago es una pieza irrepetible.
       </span>
     </motion.h2>

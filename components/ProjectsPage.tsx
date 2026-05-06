@@ -183,7 +183,7 @@ export default function ProjectsPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
           >
-            <span className="bg-gradient-to-r from-white via-violet-200 to-white bg-clip-text text-transparent" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            <span className="bg-gradient-to-r from-white via-violet-200 to-white gradient-text">
               Proyectos
             </span>
           </motion.h1>

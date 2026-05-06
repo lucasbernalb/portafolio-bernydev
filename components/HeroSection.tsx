@@ -69,8 +69,7 @@ export default function HeroSection() {
               {/* BERNY con Glitch Mejorado */}
               <span className="relative inline-block">
                 <motion.span
-                  className="bg-gradient-to-b from-white to-violet-200 bg-clip-text text-transparent relative inline-block"
-                  style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                  className="bg-gradient-to-b from-white to-violet-200 gradient-text relative inline-block"
                   initial={{ opacity: 0 }}
                   animate={titleVisible ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ duration: 0.3, delay: 0.2 }}
@@ -80,8 +79,7 @@ export default function HeroSection() {
 
                 {/* Capa Glitch Cyan con Skew */}
                 <motion.span
-                  className="absolute inset-0 bg-gradient-to-b from-cyan-300 to-cyan-500 bg-clip-text text-transparent"
-                  style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                  className="absolute inset-0 bg-gradient-to-b from-cyan-300 to-cyan-500 gradient-text"
                   initial={{ opacity: 0, x: 0, skewX: 0 }}
                   animate={titleVisible ? {
                     opacity: [0, 0.9, 0, 0.5, 0, 0.7, 0],
@@ -101,8 +99,7 @@ export default function HeroSection() {
 
                 {/* Capa Glitch Magenta con Skew */}
                 <motion.span
-                  className="absolute inset-0 bg-gradient-to-b from-pink-300 to-pink-500 bg-clip-text text-transparent"
-                  style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                  className="absolute inset-0 bg-gradient-to-b from-pink-300 to-pink-500 gradient-text"
                   initial={{ opacity: 0, x: 0, skewX: 0 }}
                   animate={titleVisible ? {
                     opacity: [0, 0.8, 0, 0.4, 0, 0.6, 0],
@@ -123,8 +120,7 @@ export default function HeroSection() {
 
                 {/* Caracteres Random Glitch */}
                 <motion.span
-                  className="absolute inset-0 bg-gradient-to-b from-white to-zinc-300 bg-clip-text text-transparent"
-                  style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                  className="absolute inset-0 bg-gradient-to-b from-white to-zinc-300 gradient-text"
                   initial={{ opacity: 0 }}
                   animate={titleVisible ? {
                     opacity: [0, 0, 0.4, 0],
@@ -160,8 +156,7 @@ export default function HeroSection() {
               {/* DEV con Glitch Mejorado */}
               <span className="relative inline-block">
                 <motion.span
-                  className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent relative inline-block"
-                  style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                  className="bg-gradient-to-r from-violet-400 to-purple-400 gradient-text relative inline-block"
                   initial={{ opacity: 0 }}
                   animate={titleVisible ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ duration: 0.3, delay: 0.4 }}
@@ -171,8 +166,7 @@ export default function HeroSection() {
 
                 {/* Capa Glitch Cyan para DEV */}
                 <motion.span
-                  className="absolute inset-0 bg-gradient-to-r from-cyan-300 to-cyan-500 bg-clip-text text-transparent"
-                  style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                  className="absolute inset-0 bg-gradient-to-r from-cyan-300 to-cyan-500 gradient-text"
                   initial={{ opacity: 0, x: 0, skewX: 0 }}
                   animate={titleVisible ? {
                     opacity: [0, 0.9, 0, 0.5, 0, 0.7, 0],
@@ -193,8 +187,7 @@ export default function HeroSection() {
 
                 {/* Capa Glitch Magenta para DEV */}
                 <motion.span
-                  className="absolute inset-0 bg-gradient-to-r from-pink-300 to-pink-500 bg-clip-text text-transparent"
-                  style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                  className="absolute inset-0 bg-gradient-to-r from-pink-300 to-pink-500 gradient-text"
                   initial={{ opacity: 0, x: 0, skewX: 0 }}
                   animate={titleVisible ? {
                     opacity: [0, 0.8, 0, 0.4, 0, 0.6, 0],
@@ -215,8 +208,7 @@ export default function HeroSection() {
 
                 {/* Caracteres Random para DEV */}
                 <motion.span
-                  className="absolute inset-0 bg-gradient-to-r from-violet-200 to-purple-300 bg-clip-text text-transparent"
-                  style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                  className="absolute inset-0 bg-gradient-to-r from-violet-200 to-purple-300 gradient-text"
                   initial={{ opacity: 0 }}
                   animate={titleVisible ? {
                     opacity: [0, 0, 0.4, 0],
