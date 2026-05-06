@@ -34,21 +34,21 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
       return;
     }
 
-    // Secuencia de animaciones
+    // Secuencia de animaciones (mínimo ~6s para apreciar la animación)
     const timers: NodeJS.Timeout[] = [];
 
-    // Fase 1: Logo aparece con fade-in + scale (100ms después de mount)
+    // Fase 1: Logo aparece con fade-in + scale (300ms después de mount)
     timers.push(
       setTimeout(() => {
         setPhase("logo-in");
-      }, 150)
+      }, 300)
     );
 
     // Fase 2: Loader comienza a desvanecerse y el logo transiciona
     timers.push(
       setTimeout(() => {
         setPhase("fade-out");
-      }, 1200)
+      }, 5000)
     );
 
     // Fase 3: Notificar que terminó
@@ -56,7 +56,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
       setTimeout(() => {
         setIsComplete(true);
         onComplete();
-      }, 1500)
+      }, 5800)
     );
 
     return () => timers.forEach(clearTimeout);
@@ -76,7 +76,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
           animate={{ opacity: phase === "fade-out" ? 0 : 1 }}
           exit={{ opacity: 0 }}
           transition={{ 
-            duration: 0.5, 
+            duration: 0.8, 
             ease: [0.4, 0, 0.2, 1] 
           }}
           style={{ 
