@@ -5,6 +5,7 @@ import { motion, useMotionValue, useTransform, useInView, useScroll } from "fram
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import Image from "next/image";
+import { useTranslation } from "@/contexts/LanguageContext";
 
 const capabilities = [
   {
@@ -57,6 +58,7 @@ const skills = [
 function SectionLabel() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { t } = useTranslation();
 
   return (
     <motion.div
@@ -73,7 +75,7 @@ function SectionLabel() {
         transition={{ duration: 0.6, delay: 0.2 }}
       />
       <span className="text-xs font-medium tracking-[0.3em] uppercase text-violet-400">
-        Sobre Mí
+        {t("about.label")}
       </span>
     </motion.div>
   );

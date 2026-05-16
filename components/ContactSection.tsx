@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useTranslation } from "@/contexts/LanguageContext";
 
 const contactMethods = [
   {
@@ -34,6 +35,7 @@ const contactMethods = [
 ];
 
 export default function ContactSection() {
+  const { t } = useTranslation();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
@@ -62,7 +64,7 @@ export default function ContactSection() {
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
           >
             <span className="bg-gradient-to-r from-white via-violet-200 to-white gradient-text">
-              Contacto
+              {t("contact.title")}
             </span>
           </motion.h2>
           <motion.p
@@ -72,7 +74,7 @@ export default function ContactSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg md:text-xl text-zinc-400"
           >
-            Construyamos algo increíble juntos
+            {t("contact.subtitle")}
           </motion.p>
         </motion.div>
 

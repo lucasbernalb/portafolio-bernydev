@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Me",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "hero": {
+    "subtitle": "Full Stack Developer & AI. ",
+    "highlight": "Fast development. Smart design. Your idea comes to life.",
+    "cta": "See more"
+  },
+  "scroll": {
+    "home": "Home",
+    "about": "About Me",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "about": {
+    "label": "About Me"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Let's build something amazing together"
+  },
+  "navMenu": {
+    "open": "Open menu",
+    "close": "Close menu"
+  },
+  "toggle": {
+    "toEn": "Switch to English",
+    "toEs": "Cambiar a Español"
+  }
+}

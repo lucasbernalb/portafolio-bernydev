@@ -26,8 +26,15 @@ export default function LoaderProvider({ children }: LoaderProviderProps) {
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const [isLoading, setIsLoading] = useState(!prefersReducedMotion);
-  const [isReady, setIsReady] = useState(prefersReducedMotion);
+  // Si ya se mostró el loader fancy en esta sesión, lo saltamos
+  const [alreadyShown] = useState(() => {
+    if (typeof window === "undefined") return true; // SSR: saltar loader
+    const shown = sessionStorage.getItem("bernydev-loader-shown");
+    return shown === "true";
+  });
+
+  const [isLoading, setIsLoading] = useState(!prefersReducedMotion && !alreadyShown);
+  const [isReady, setIsReady] = useState(prefersReducedMotion || alreadyShown);
   const [mounted, setMounted] = useState(false);
 
   // Solo marca mounted — no modifica isLoading/isReady aquí
@@ -49,6 +56,8 @@ export default function LoaderProvider({ children }: LoaderProviderProps) {
   }, []);
 
   const handleLoaderComplete = () => {
+    // Marcar en sessionStorage para que no vuelva a mostrar el fancy loader
+    try { sessionStorage.setItem("bernydev-loader-shown", "true"); } catch {}
     setIsLoading(false);
     setTimeout(() => setIsReady(true), 100);
   };

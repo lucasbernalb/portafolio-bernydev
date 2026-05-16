@@ -2,13 +2,7 @@
 
 import { useMemo, useCallback } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
-
-const sections = [
-  { id: "hero", label: "Inicio", position: 0.1 },
-  { id: "about", label: "Sobre Mí", position: 0.35 },
-  { id: "projects", label: "Proyectos", position: 0.65 },
-  { id: "contact", label: "Contacto", position: 0.9 },
-];
+import { useTranslation } from "@/contexts/LanguageContext";
 
 function TopProgressBar() {
   const { scrollYProgress } = useScroll();
@@ -130,7 +124,7 @@ function SectionNode({
   );
 }
 
-function ZigZagProgressLine() {
+function ZigZagProgressLine({ sections }: { sections: { id: string; label: string; position: number }[] }) {
   const { scrollYProgress } = useScroll();
   
   const springProgress = useSpring(scrollYProgress, {
@@ -238,10 +232,22 @@ function ZigZagProgressLine() {
 }
 
 export default function ScrollProgress() {
+  const { t } = useTranslation();
+
+  const sections = useMemo(
+    () => [
+      { id: "hero", label: t("scroll.home"), position: 0.1 },
+      { id: "about", label: t("scroll.about"), position: 0.35 },
+      { id: "projects", label: t("scroll.projects"), position: 0.65 },
+      { id: "contact", label: t("scroll.contact"), position: 0.9 },
+    ],
+    [t]
+  );
+
   return (
     <>
       <TopProgressBar />
-      <ZigZagProgressLine />
+      <ZigZagProgressLine sections={sections} />
     </>
   );
 }

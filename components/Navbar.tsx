@@ -1,17 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "./Logo";
 import { useLoader } from "./LoaderProvider";
 import { usePathname } from "next/navigation";
-
-const navLinks = [
-  { name: "Inicio", href: "#hero" },
-  { name: "Sobre Mí", href: "#about" },
-  { name: "Proyectos", href: "#projects" },
-  { name: "Contacto", href: "#contact" },
-];
+import { useTranslation } from "@/contexts/LanguageContext";
+import LanguageToggle from "./LanguageToggle";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -19,6 +14,17 @@ export default function Navbar() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const { isReady } = useLoader();
+  const { t } = useTranslation();
+
+  const navLinks = useMemo(
+    () => [
+      { name: t("nav.home"), href: "#hero" },
+      { name: t("nav.about"), href: "#about" },
+      { name: t("nav.projects"), href: "#projects" },
+      { name: t("nav.contact"), href: "#contact" },
+    ],
+    [t]
+  );
 
   // Scroll local a una sección
   const scrollToSection = useCallback((hash: string) => {
@@ -88,7 +94,7 @@ export default function Navbar() {
           </motion.div>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-10">
+          <div className="hidden md:flex items-center gap-8 lg:gap-10">
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -102,15 +108,18 @@ export default function Navbar() {
                 </span>
               </a>
             ))}
+            <LanguageToggle />
           </div>
 
           {/* Mobile Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden relative w-10 h-10 flex items-center justify-center"
-            aria-label="Abrir menú"
-            aria-expanded={isMobileMenuOpen}
-          >
+          <div className="flex items-center gap-2 md:hidden">
+            <LanguageToggle />
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="relative w-10 h-10 flex items-center justify-center"
+              aria-label={isMobileMenuOpen ? t("navMenu.close") : t("navMenu.open")}
+              aria-expanded={isMobileMenuOpen}
+            >
             <div className="flex flex-col gap-1.5">
               <motion.span
                 className="w-6 h-0.5 bg-zinc-400 rounded-full"
@@ -132,6 +141,7 @@ export default function Navbar() {
               />
             </div>
           </button>
+          </div>
         </div>
       </motion.nav>
 
@@ -161,6 +171,13 @@ export default function Navbar() {
                 {link.name}
               </motion.a>
             ))}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: navLinks.length * 0.1 }}
+            >
+              <LanguageToggle />
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

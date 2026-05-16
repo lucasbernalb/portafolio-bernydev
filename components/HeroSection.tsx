@@ -1,25 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useTranslation } from "@/contexts/LanguageContext";
 
 const mainTitle = "BERNY";
 const subTitle = "DEV";
-const subtitleText = "Full Stack Developer & AI. ";
-const subtitleHighlight = "Desarrollo rápido. Diseño inteligente. Tu idea cobra vida.";
 const glitchChars = "!@#$%&*%§<>?/|\\";
 
 export default function HeroSection() {
+  const { t } = useTranslation();
   const [isLoaded] = useState(true); // Siempre true - animaciones start on mount
   const [titleVisible, setTitleVisible] = useState(false);
+
+  const subtitleText = useMemo(() => t("hero.subtitle"), [t]);
+  const subtitleHighlight = useMemo(() => t("hero.highlight"), [t]);
+  const ctaText = useMemo(() => t("hero.cta"), [t]);
+
+  const subtitleLetters = useMemo(() => subtitleText.split(""), [subtitleText]);
 
   useEffect(() => {
     const timer = setTimeout(() => setTitleVisible(true), 300);
     return () => clearTimeout(timer);
   }, []);
-
-  const subtitleLetters = subtitleText.split("");
 
   return (
     <section
@@ -289,7 +293,7 @@ export default function HeroSection() {
                 whileTap={{ scale: 0.98 }}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-violet-600/20 border border-violet-500/30 text-violet-300 font-medium text-sm hover:bg-violet-600/30 transition-all cursor-pointer"
               >
-                Ver más
+                {ctaText}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>

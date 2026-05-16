@@ -77,12 +77,12 @@ function ProjectCard({
         className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{
           background: `radial-gradient(circle, ${project.accent}30 0%, transparent 70%)`,
-          filter: "blur(20px)",
+          filter: "blur(8px)",
         }}
       />
 
       <div className="relative bg-zinc-950/80 backdrop-blur-xl border border-zinc-800/50 rounded-2xl overflow-hidden transition-all duration-500 group-hover:border-zinc-700/80 h-full">
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative h-56 overflow-hidden">
           <Image
             src={project.image}
             alt={project.title}
@@ -100,7 +100,7 @@ function ProjectCard({
               }
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/60 via-transparent to-transparent" />
 
           <div className="absolute top-4 left-4 flex items-center gap-2">
             <span className="text-xs font-medium tracking-wider uppercase text-zinc-400">
