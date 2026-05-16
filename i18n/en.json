@@ -17,7 +17,73 @@
     "contact": "Contact"
   },
   "about": {
-    "label": "About Me"
+    "label": "About Me",
+    "available": "Available for work",
+    "headline1": "I'm Berny.",
+    "headline2": "Artist at heart, developer by passion.",
+    "headline3": "Every website I build is a one-of-a-kind piece.",
+    "sections": {
+      "whatIDo": "What I Do",
+      "experience": "Experience",
+      "philosophy": "My Philosophy"
+    },
+    "capabilities": [
+      {
+        "title": "Full Stack Development",
+        "desc": "End-to-end solutions with best architecture practices and clean code."
+      },
+      {
+        "title": "Cutting-Edge Technologies",
+        "desc": "Implementing state-of-the-art tools to create digital experiences that make a difference."
+      },
+      {
+        "title": "Premium Performance",
+        "desc": "Ultra-fast applications optimized to the max so every interaction feels smooth and instant."
+      },
+      {
+        "title": "Creative Direction",
+        "desc": "Where technical precision meets aesthetic vision to deliver standout results."
+      }
+    ],
+    "skills": [
+      { "name": "Frontend Engineering", "level": "Expert", "desc": "React, Next.js, animations, UI systems" },
+      { "name": "Backend & APIs", "level": "Advanced", "desc": "Node.js, databases, scalable architecture" },
+      { "name": "Modern Stack", "level": "Advanced", "desc": "Latest tools seamlessly integrated into the workflow" },
+      { "name": "3D & Interactive", "level": "Intermediate", "desc": "Three.js, WebGL, immersive experiences" },
+      { "name": "Performance", "level": "Advanced", "desc": "Optimization, rendering, UX speed" },
+      { "name": "Creative Direction", "level": "Advanced", "desc": "Design, branding, visual identity" }
+    ],
+    "philosophyPrefix": "Imagine. Adapt.",
+    "philosophyText": "I don't do generic — every website I create has its own identity, it's a one-of-a-kind piece.",
+    "closing": "Design is my essence, coding is my tool. Every line of code is a creative decision."
+  },
+  "projects": {
+    "sectionBadge": "Featured Work",
+    "sectionHighlight": "Featured",
+    "sectionDesc": "A curated collection of digital experiences where innovation meets exceptional design.",
+    "pageSubtitle": "A selection of my work and experiments",
+    "seeAll": "See All Projects",
+    "demo": "Demo",
+    "github": "GitHub",
+    "inProgress": "In Progress",
+    "cards": {
+      "card1": {
+        "category": "Full Stack E-Commerce",
+        "desc": "E-commerce platform for tool sales with inventory and order management"
+      },
+      "card2": {
+        "category": "Landing Page",
+        "desc": "Landing page for artisan egg sales with WhatsApp integration for orders"
+      },
+      "card3": {
+        "category": "Online Store",
+        "desc": "Online store specialized in hardware repair and tech accessories sales"
+      },
+      "card4": {
+        "category": "Art Gallery",
+        "desc": "Online artwork sales platform with an artistic works catalog"
+      }
+    }
   },
   "contact": {
     "title": "Contact",

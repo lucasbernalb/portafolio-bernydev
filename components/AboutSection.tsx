@@ -7,52 +7,19 @@ import * as THREE from "three";
 import Image from "next/image";
 import { useTranslation } from "@/contexts/LanguageContext";
 
-const capabilities = [
-  {
-    title: "Desarrollo Full Stack",
-    description: "Soluciones de extremo a extremo con las mejores prácticas de arquitectura y código limpio.",
-    icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-      </svg>
-    ),
-  },
-  {
-    title: "Tecnologías de Vanguardia",
-    description: "Implementando herramientas de última generación para crear experiencias digitales que marquen la diferencia.",
-    icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-      </svg>
-    ),
-  },
-  {
-    title: "Rendimiento Premium",
-    description: "Aplicaciones ultrarrápidas optimizadas al máximo para que cada interacción se sienta fluida e instantánea.",
-    icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-    ),
-  },
-  {
-    title: "Dirección Creativa",
-    description: "Donde la precisión técnica se encuentra con la visión estética para entregar resultados que destacan.",
-    icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-      </svg>
-    ),
-  },
-];
-
-const skills = [
-  { name: "Ingeniería Frontend", level: "Experto", description: "React, Next.js, animaciones, sistemas de UI" },
-  { name: "Backend & APIs", level: "Avanzado", description: "Node.js, bases de datos, arquitectura escalable" },
-  { name: "Stack Moderno", level: "Avanzado", description: "Herramientas de última generación integradas al workflow" },
-  { name: "3D & Interactivo", level: "Intermedio", description: "Three.js, WebGL, experiencias inmersivas" },
-  { name: "Rendimiento", level: "Avanzado", description: "Optimización, renderizado, velocidad UX" },
-  { name: "Dirección Creativa", level: "Avanzado", description: "Diseño, branding, identidad visual" },
+const capabilityIcons = [
+  <svg key="code" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+  </svg>,
+  <svg key="tech" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+  </svg>,
+  <svg key="perf" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+  </svg>,
+  <svg key="design" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+  </svg>,
 ];
 
 function SectionLabel() {
@@ -104,6 +71,7 @@ function SectionTitle({ title }: { title: string }) {
 function AvatarContainer() {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const { t } = useTranslation();
 
   return (
     <motion.div
@@ -212,7 +180,7 @@ function AvatarContainer() {
             />
           </div>
           
-          <span className="text-xs font-medium text-zinc-400">Disponible para trabajar</span>
+          <span className="text-xs font-medium text-zinc-400">{t("about.available")}</span>
         </div>
       </motion.div>
     </motion.div>
@@ -451,6 +419,7 @@ function EnergySpine({ scrollYProgress }: { scrollYProgress: ReturnType<typeof u
 function Headline() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { t } = useTranslation();
 
   return (
     <motion.h2
@@ -461,15 +430,15 @@ function Headline() {
       className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
     >
       <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 gradient-text">
-        Soy Berny.
+        {t("about.headline1")}
       </span>
       <br />
       <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 gradient-text">
-        Artista de corazón, developer por pasión.
+        {t("about.headline2")}
       </span>
       <br />
       <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 gradient-text">
-        Cada web que hago es una pieza irrepetible.
+        {t("about.headline3")}
       </span>
     </motion.h2>
   );
@@ -526,7 +495,7 @@ function CapabilityCard({
   );
 }
 
-function CapabilityGrid() {
+function CapabilityGrid({ capabilities }: { capabilities: { title: string; description: string; icon: React.ReactNode }[] }) {
   const ref = useRef(null);
 
   return (
@@ -548,7 +517,7 @@ function SkillCard({
   skill,
   index,
 }: {
-  skill: (typeof skills)[0];
+  skill: { name: string; level: string; description: string };
   index: number;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -624,7 +593,7 @@ function SkillCard({
   );
 }
 
-function SkillsGrid() {
+function SkillsGrid({ skills }: { skills: { name: string; level: string; description: string }[] }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {skills.map((skill, index) => (
@@ -637,6 +606,7 @@ function SkillsGrid() {
 function ClosingPhrase() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const { t } = useTranslation();
 
   return (
     <motion.div
@@ -651,7 +621,7 @@ function ClosingPhrase() {
       <div className="flex items-start gap-4">
         <div className="w-1 h-full min-h-[48px] bg-gradient-to-b from-violet-500 to-fuchsia-500 rounded-full" />
         <p className="text-lg md:text-xl text-zinc-300 italic leading-relaxed">
-          Diseñar es mi esencia, programar es mi herramienta. Cada línea de código es una decisión creativa.
+          {t("about.closing")}
         </p>
       </div>
     </motion.div>
@@ -661,6 +631,29 @@ function ClosingPhrase() {
 export default function AboutSection() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll();
+  const { t } = useTranslation();
+
+  const capabilities = useMemo(
+    () => [
+      { title: t("about.capabilities.0.title"), description: t("about.capabilities.0.desc"), icon: capabilityIcons[0] },
+      { title: t("about.capabilities.1.title"), description: t("about.capabilities.1.desc"), icon: capabilityIcons[1] },
+      { title: t("about.capabilities.2.title"), description: t("about.capabilities.2.desc"), icon: capabilityIcons[2] },
+      { title: t("about.capabilities.3.title"), description: t("about.capabilities.3.desc"), icon: capabilityIcons[3] },
+    ],
+    [t]
+  );
+
+  const skills = useMemo(
+    () => [
+      { name: t("about.skills.0.name"), level: t("about.skills.0.level"), description: t("about.skills.0.desc") },
+      { name: t("about.skills.1.name"), level: t("about.skills.1.level"), description: t("about.skills.1.desc") },
+      { name: t("about.skills.2.name"), level: t("about.skills.2.level"), description: t("about.skills.2.desc") },
+      { name: t("about.skills.3.name"), level: t("about.skills.3.level"), description: t("about.skills.3.desc") },
+      { name: t("about.skills.4.name"), level: t("about.skills.4.level"), description: t("about.skills.4.desc") },
+      { name: t("about.skills.5.name"), level: t("about.skills.5.level"), description: t("about.skills.5.desc") },
+    ],
+    [t]
+  );
 
   return (
     <section
@@ -714,20 +707,20 @@ export default function AboutSection() {
               </div>
 
               <div className="space-y-6">
-                <SectionTitle title="Lo Que Hago" />
-                <CapabilityGrid />
+                <SectionTitle title={t("about.sections.whatIDo")} />
+                <CapabilityGrid capabilities={capabilities} />
               </div>
 
               <div className="space-y-6">
-                <SectionTitle title="Experiencia" />
-                <SkillsGrid />
+                <SectionTitle title={t("about.sections.experience")} />
+                <SkillsGrid skills={skills} />
               </div>
 
               <div className="space-y-6">
-                <SectionTitle title="Mi Filosofía" />
+                <SectionTitle title={t("about.sections.philosophy")} />
                 <div className="p-6 rounded-xl bg-zinc-900/50 backdrop-blur-sm border border-zinc-800">
                   <p className="text-zinc-300 leading-relaxed">
-                    <span className="text-violet-400 font-medium">Imagino. Adapto.</span> No busco lo genérico — cada web que hago tiene identidad propia, es una pieza irrepetible.
+                    <span className="text-violet-400 font-medium">{t("about.philosophyPrefix")}</span> {t("about.philosophyText")}
                   </p>
                 </div>
               </div>
