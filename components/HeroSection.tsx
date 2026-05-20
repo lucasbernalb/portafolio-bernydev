@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { useTranslation } from "@/contexts/LanguageContext";
 
@@ -11,6 +11,7 @@ const glitchChars = "!@#$%&*%§<>?/|\\";
 
 export default function HeroSection() {
   const { t } = useTranslation();
+  const reduceMotion = useReducedMotion();
   const [isLoaded] = useState(true); // Siempre true - animaciones start on mount
   const [titleVisible, setTitleVisible] = useState(false);
 
@@ -33,7 +34,7 @@ export default function HeroSection() {
       {/* Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <Image
-          src="/bernydev/bernydevhero.png"
+          src="/bernydev/bernydevhero.webp"
           alt=""
           fill
           className="object-cover opacity-[0.08] blur-[3px] scale-110"
@@ -85,7 +86,7 @@ export default function HeroSection() {
                 <motion.span
                   className="absolute inset-0 bg-gradient-to-b from-cyan-300 to-cyan-500 gradient-text"
                   initial={{ opacity: 0, x: 0, skewX: 0 }}
-                  animate={titleVisible ? {
+                  animate={titleVisible && !reduceMotion ? {
                     opacity: [0, 0.9, 0, 0.5, 0, 0.7, 0],
                     x: [0, -4, 2, -2, 0],
                     skewX: [0, -5, 3, -2, 0],
@@ -105,7 +106,7 @@ export default function HeroSection() {
                 <motion.span
                   className="absolute inset-0 bg-gradient-to-b from-pink-300 to-pink-500 gradient-text"
                   initial={{ opacity: 0, x: 0, skewX: 0 }}
-                  animate={titleVisible ? {
+                  animate={titleVisible && !reduceMotion ? {
                     opacity: [0, 0.8, 0, 0.4, 0, 0.6, 0],
                     x: [0, 4, -2, 2, 0],
                     skewX: [0, 5, -3, 2, 0],
@@ -126,12 +127,11 @@ export default function HeroSection() {
                 <motion.span
                   className="absolute inset-0 bg-gradient-to-b from-white to-zinc-300 gradient-text"
                   initial={{ opacity: 0 }}
-                  animate={titleVisible ? {
+                  animate={titleVisible && !reduceMotion ? {
                     opacity: [0, 0, 0.4, 0],
                     transition: {
                       duration: 0.15,
-                      repeat: Infinity,
-                      repeatDelay: 5,
+                      // No infinite repeat on reduced‑motion devices
                     }
                   } : {}}
                   aria-hidden="true"

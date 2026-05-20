@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useMemo, useEffect } from "react";
-import { motion, useMotionValue, useTransform, useInView, useScroll } from "framer-motion";
+import { motion, useMotionValue, useTransform, useInView, useScroll, useReducedMotion } from "framer-motion";
 import { Canvas, useFrame } from "@react-three/fiber";
 
 import * as THREE from "three";

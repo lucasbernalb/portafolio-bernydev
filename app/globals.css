@@ -1,5 +1,25 @@
 @import "tailwindcss";
 
+/* ==== Mobile‑only performance overrides (iOS) ==== */
+@media (max-width: 640px) {
+  /* Disable sticky columns on mobile */
+  .lg\\:sticky { position: static !important; }
+  /* Override overflow:hidden on mobile to prevent clipping issues */
+  .overflow-hidden { overflow: visible !important; }
+  /* Reduce expensive blur filters */
+  .blur-3xl { filter: blur(2px) !important; }
+  .blur-\[140px\], .blur-\[120px\], .blur-\[160px\] { filter: blur(30px) !important; }
+  /* Disable backdrop‑filter on mobile */
+  .backdrop-blur-xl, .backdrop-blur { backdrop-filter: none !important; }
+  /* Simplify mix‑blend‑mode */
+  .mix-blend-normal { mix-blend-mode: normal !important; }
+  /* Turn off heavy opacity/pulse animations */
+  .animate-fade, .animate-pulse { animation: none !important; }
+  /* Prevent overflow‑hidden on large containers */
+  .overflow-hidden-desktop { overflow: visible !important; }
+}
+
+
 :root {
   --background: #0A0A0F;
   --foreground: #E5E7EB;
