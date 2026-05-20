@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState, useMemo, useEffect } from "react";
 import { motion, useMotionValue, useTransform, useInView, useScroll } from "framer-motion";
 import { Canvas, useFrame } from "@react-three/fiber";
+
 import * as THREE from "three";
 import Image from "next/image";
 import { useTranslation } from "@/contexts/LanguageContext";
@@ -372,8 +373,13 @@ function SceneLighting() {
 }
 
 function EnergySpine({ scrollYProgress }: { scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"] }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const [showCanvas, setShowCanvas] = useState(false);
+  const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
+  // Show canvas only after component enters viewport
+   useEffect(() => {
+     if (isInView) setShowCanvas(true);
+   }, [isInView]);
 
   const yOffset = useTransform(scrollYProgress, [0, 1], [0, 60]);
 
@@ -403,15 +409,17 @@ function EnergySpine({ scrollYProgress }: { scrollYProgress: ReturnType<typeof u
         />
       </div>
 
-      <Canvas
-        style={{ width: "100%", height: "100%" }}
-        camera={{ position: [0, 0, 2.4], fov: 55 }}
-        dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true }}
-      >
-        <SceneLighting />
-        <AnimatedSerpent />
-      </Canvas>
+{showCanvas && (
+          <Canvas
+            style={{ width: "100%", height: "100%" }}
+            camera={{ position: [0, 0, 2.4], fov: 55 }}
+            dpr={[1, 1.5]}
+            gl={{ antialias: true, alpha: true }}
+          >
+            <SceneLighting />
+            <AnimatedSerpent />
+          </Canvas>
+        )}
     </motion.div>
   );
 }
