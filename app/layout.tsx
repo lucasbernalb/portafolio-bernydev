@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import BodyWrapper from "@/components/BodyWrapper";
+import RouteTransitionLoader from "@/components/RouteTransitionLoader";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
 const inter = Inter({
@@ -50,6 +51,7 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased bg-[#0A0A0F] text-white overflow-x-hidden`}>
         <LanguageProvider>
           <BodyWrapper>{children}</BodyWrapper>
+        <RouteTransitionLoader />
         </LanguageProvider>
       </body>
     </html>
