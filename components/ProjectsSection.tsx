@@ -283,7 +283,7 @@ export default function ProjectsSection() {
       ref={containerRef}
       className="relative min-h-screen py-32 overflow-hidden bg-black"
     >
-      <motion.div style={{ y: backgroundY, opacity }} className="absolute inset-0">
+      <motion.div style={{ y: backgroundY, opacity, willChange: "transform, opacity" }} className="absolute inset-0">
         <div className="absolute inset-0">
           <svg className="w-full h-full opacity-[0.03]">
             <defs>
@@ -322,7 +322,7 @@ export default function ProjectsSection() {
             href="/projects"
             whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(168,85,247,0.4)" }}
             whileTap={{ scale: 0.98 }}
-            className="relative inline-flex px-10 py-4 rounded-full font-semibold text-sm overflow-hidden"
+            className="relative inline-flex px-10 py-4 rounded-full font-semibold text-sm overflow-hidden btn-cta"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-purple-600 to-violet-600" />
             <div className="absolute inset-0 bg-gradient-to-r from-violet-500 via-purple-500 to-violet-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

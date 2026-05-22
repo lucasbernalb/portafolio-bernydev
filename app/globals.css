@@ -5,7 +5,7 @@
   /* Disable sticky columns on mobile */
   .lg\\:sticky { position: static !important; }
   /* Override overflow:hidden on mobile to prevent clipping issues */
-  .overflow-hidden { overflow: visible !important; }
+  .overflow-hidden { overflow: hidden !important; }
   /* Reduce expensive blur filters */
   .blur-3xl { filter: blur(2px) !important; }
   .blur-\[140px\], .blur-\[120px\], .blur-\[160px\] { filter: blur(30px) !important; }
@@ -44,6 +44,16 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/* Ensure no horizontal scroll globally */
+html, body {
+  overflow-x: hidden !important;
+}
+
+/* Custom button CTA for consistent rounded corners */
+.btn-cta {
+  @apply relative inline-flex px-10 py-4 rounded-full font-semibold text-sm overflow-hidden;
 }
 
 body::before {
