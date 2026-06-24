@@ -37,6 +37,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# system / crash files
+nul
+*.stackdump
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

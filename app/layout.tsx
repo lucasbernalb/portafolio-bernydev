@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import BodyWrapper from "@/components/BodyWrapper";
 import RouteTransitionLoader from "@/components/RouteTransitionLoader";
+import AIAssistant from "@/components/AIAssistant";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
 const inter = Inter({
@@ -52,6 +53,7 @@ export default function RootLayout({
         <LanguageProvider>
           <BodyWrapper>{children}</BodyWrapper>
         <RouteTransitionLoader />
+        <AIAssistant />
         </LanguageProvider>
       </body>
     </html>

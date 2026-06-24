@@ -96,5 +96,20 @@
   "toggle": {
     "toEn": "Switch to English",
     "toEs": "Cambiar a Español"
+  },
+  "chatbot": {
+    "welcome": "Hi! 👋 I'm the BERNY DEV assistant. How can I help you today?",
+    "hint1": "💬 Got questions?",
+    "hint2": "💡 Tell me about your project",
+    "hint3": "🚀 Need a website?",
+    "hint4": "🤖 Let's talk about your idea",
+    "hint5": "⚡ AI Automations",
+    "title": "BERNY DEV",
+    "subtitle": "AI Assistant",
+    "placeholder": "Type your message...",
+    "ariaOpen": "Open assistant",
+    "ariaClose": "Close assistant",
+    "ariaSend": "Send message",
+    "errorMsg": "Sorry, there was an error processing your message. Please try again later."
   }
 }

@@ -34,7 +34,7 @@ export default function HeroSection() {
       {/* Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <Image
-          src="/bernydev/bernydevhero.webp"
+          src="/bernydev/bernydevhero.png"
           alt=""
           fill
           className="object-cover opacity-[0.08] blur-[3px] scale-110"

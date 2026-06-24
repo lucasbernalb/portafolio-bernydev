@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import NavigationLoader from "./NavigationLoader";
 
@@ -9,7 +9,6 @@ import NavigationLoader from "./NavigationLoader";
  * It does NOT replace the fancy initial loader handled by LoaderProvider/PageLoader.
  */
 export default function RouteTransitionLoader() {
-  const router = useRouter();            // <-- API correcta para app router
   const pathname = usePathname();        // <-- nos da la ruta actual
   const [show, setShow] = useState(false);
   const [prevPath, setPrevPath] = useState<string | null>(null);

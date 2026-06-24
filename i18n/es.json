@@ -96,5 +96,20 @@
   "toggle": {
     "toEn": "Switch to English",
     "toEs": "Cambiar a Español"
+  },
+  "chatbot": {
+    "welcome": "¡Hola! 👋 Soy el asistente de BERNY DEV. Contame, ¿en qué puedo ayudarte hoy?",
+    "hint1": "💬 ¿Tienes dudas?",
+    "hint2": "💡 Contame tu proyecto",
+    "hint3": "🚀 ¿Necesitas una web?",
+    "hint4": "🤖 Hablemos de tu idea",
+    "hint5": "⚡ Automatizaciones IA",
+    "title": "BERNY DEV",
+    "subtitle": "Asistente IA",
+    "placeholder": "Escribí tu mensaje...",
+    "ariaOpen": "Abrir asistente",
+    "ariaClose": "Cerrar asistente",
+    "ariaSend": "Enviar mensaje",
+    "errorMsg": "Lo siento, hubo un error al procesar tu mensaje. Por favor, intentá de nuevo más tarde."
   }
 }
