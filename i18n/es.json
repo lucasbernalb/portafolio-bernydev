@@ -6,8 +6,8 @@
     "contact": "Contacto"
   },
   "hero": {
-    "subtitle": "Full Stack Developer & AI. ",
-    "highlight": "Desarrollo rápido. Diseño inteligente. Tu idea cobra vida.",
+    "subtitle": "Full Stack & AI Automation. ",
+    "highlight": "Webs modernas + Automatización inteligente para tu negocio.",
     "cta": "Ver más"
   },
   "scroll": {
@@ -21,7 +21,7 @@
     "available": "Disponible para trabajar",
     "headline1": "Soy Berny.",
     "headline2": "Artista de corazón, developer por pasión.",
-    "headline3": "Cada web que hago es una pieza irrepetible.",
+    "headline3": "Automatización con IA que transforma tu negocio.",
     "sections": {
       "whatIDo": "Lo Que Hago",
       "experience": "Experiencia",
@@ -30,38 +30,38 @@
     "capabilities": [
       {
         "title": "Desarrollo Full Stack",
-        "desc": "Soluciones de extremo a extremo con las mejores prácticas de arquitectura y código limpio."
+        "desc": "Soluciones integrales con arquitectura limpia, escalable y lista para producción."
       },
       {
-        "title": "Tecnologías de Vanguardia",
-        "desc": "Implementando herramientas de última generación para crear experiencias digitales que marquen la diferencia."
+        "title": "Automatización Inteligente",
+        "desc": "Automatizamos procesos y workflows con IA para que tu negocio opere solo mientras vos crecés."
       },
       {
         "title": "Rendimiento Premium",
         "desc": "Aplicaciones ultrarrápidas optimizadas al máximo para que cada interacción se sienta fluida e instantánea."
       },
       {
-        "title": "Dirección Creativa",
-        "desc": "Donde la precisión técnica se encuentra con la visión estética para entregar resultados que destacan."
+        "title": "Agentes IA",
+        "desc": "Creamos asistentes virtuales y agentes inteligentes que trabajan 24/7 para tu empresa."
       }
     ],
     "skills": [
       { "name": "Ingeniería Frontend", "level": "Experto", "desc": "React, Next.js, animaciones, sistemas de UI" },
-      { "name": "Backend & APIs", "level": "Avanzado", "desc": "Node.js, bases de datos, arquitectura escalable" },
+      { "name": "Backend & APIs", "level": "Avanzado", "desc": "Node.js, bases de datos, integraciones, arquitectura escalable" },
       { "name": "Stack Moderno", "level": "Avanzado", "desc": "Herramientas de última generación integradas al workflow" },
-      { "name": "3D & Interactivo", "level": "Intermedio", "desc": "Three.js, WebGL, experiencias inmersivas" },
-      { "name": "Rendimiento", "level": "Avanzado", "desc": "Optimización, renderizado, velocidad UX" },
-      { "name": "Dirección Creativa", "level": "Avanzado", "desc": "Diseño, branding, identidad visual" }
+      { "name": "Automatización IA", "level": "Avanzado", "desc": "Procesos, workflows, integraciones empresariales con inteligencia artificial" },
+      { "name": "Rendimiento", "level": "Avanzado", "desc": "Optimización, escalabilidad, velocidad UX empresarial" },
+      { "name": "Agentes IA", "level": "Avanzado", "desc": "Chatbots inteligentes, asistentes virtuales, agentes autónomos" }
     ],
-    "philosophyPrefix": "Imagino. Adapto.",
-    "philosophyText": "No busco lo genérico — cada web que hago tiene identidad propia, es una pieza irrepetible.",
-    "closing": "Diseñar es mi esencia, programar es mi herramienta. Cada línea de código es una decisión creativa."
+    "philosophyPrefix": "Creo. Automatizo. Transformo.",
+    "philosophyText": "No creo soluciones genéricas — cada proyecto tiene identidad propia. Desarrollo web + automatización IA trabajando juntos para que tu negocio sea más eficiente y memorable.",
+    "closing": "Diseñar es mi esencia, programar es mi herramienta, automatizar es mi ventaja. Cada línea de código es una decisión que impulsa tu negocio."
   },
   "projects": {
     "sectionBadge": "Trabajos Destacados",
     "sectionHighlight": "Destacados",
-    "sectionDesc": "Una colección curada de experiencias digitales donde la innovación se encuentra con el diseño excepcional.",
-    "pageSubtitle": "Una selección de mi trabajo y experimentos",
+    "sectionDesc": "Una colección curada de experiencias digitales e inteligencia artificial donde la innovación potencia tu negocio.",
+    "pageSubtitle": "Una selección de mi trabajo — desarrollo web y automatización IA",
     "seeAll": "Ver Todos los Proyectos",
     "demo": "Demo",
     "github": "GitHub",
@@ -87,7 +87,7 @@
   },
   "contact": {
     "title": "Contacto",
-    "subtitle": "Construyamos algo increíble juntos"
+    "subtitle": "Transformemos tu negocio con tecnología inteligente"
   },
   "navMenu": {
     "open": "Abrir menú",

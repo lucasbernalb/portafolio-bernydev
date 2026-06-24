@@ -6,8 +6,8 @@
     "contact": "Contact"
   },
   "hero": {
-    "subtitle": "Full Stack Developer & AI. ",
-    "highlight": "Fast development. Smart design. Your idea comes to life.",
+    "subtitle": "Full Stack & AI Automation. ",
+    "highlight": "Modern web + Intelligent automation for your business.",
     "cta": "See more"
   },
   "scroll": {
@@ -21,7 +21,7 @@
     "available": "Available for work",
     "headline1": "I'm Berny.",
     "headline2": "Artist at heart, developer by passion.",
-    "headline3": "Every website I build is a one-of-a-kind piece.",
+    "headline3": "AI automation that transforms your business.",
     "sections": {
       "whatIDo": "What I Do",
       "experience": "Experience",
@@ -30,38 +30,38 @@
     "capabilities": [
       {
         "title": "Full Stack Development",
-        "desc": "End-to-end solutions with best architecture practices and clean code."
+        "desc": "End-to-end solutions with clean, scalable architecture ready for production."
       },
       {
-        "title": "Cutting-Edge Technologies",
-        "desc": "Implementing state-of-the-art tools to create digital experiences that make a difference."
+        "title": "Intelligent Automation",
+        "desc": "We automate processes and workflows with AI so your business runs while you grow."
       },
       {
         "title": "Premium Performance",
         "desc": "Ultra-fast applications optimized to the max so every interaction feels smooth and instant."
       },
       {
-        "title": "Creative Direction",
-        "desc": "Where technical precision meets aesthetic vision to deliver standout results."
+        "title": "AI Agents",
+        "desc": "We build virtual assistants and intelligent agents that work 24/7 for your company."
       }
     ],
     "skills": [
       { "name": "Frontend Engineering", "level": "Expert", "desc": "React, Next.js, animations, UI systems" },
-      { "name": "Backend & APIs", "level": "Advanced", "desc": "Node.js, databases, scalable architecture" },
+      { "name": "Backend & APIs", "level": "Advanced", "desc": "Node.js, databases, integrations, scalable architecture" },
       { "name": "Modern Stack", "level": "Advanced", "desc": "Latest tools seamlessly integrated into the workflow" },
-      { "name": "3D & Interactive", "level": "Intermediate", "desc": "Three.js, WebGL, immersive experiences" },
-      { "name": "Performance", "level": "Advanced", "desc": "Optimization, rendering, UX speed" },
-      { "name": "Creative Direction", "level": "Advanced", "desc": "Design, branding, visual identity" }
+      { "name": "AI Automation", "level": "Advanced", "desc": "Processes, workflows, enterprise integrations with artificial intelligence" },
+      { "name": "Performance", "level": "Advanced", "desc": "Optimization, scalability, enterprise-grade UX speed" },
+      { "name": "AI Agents", "level": "Advanced", "desc": "Smart chatbots, virtual assistants, autonomous agents" }
     ],
-    "philosophyPrefix": "Imagine. Adapt.",
-    "philosophyText": "I don't do generic — every website I create has its own identity, it's a one-of-a-kind piece.",
-    "closing": "Design is my essence, coding is my tool. Every line of code is a creative decision."
+    "philosophyPrefix": "Build. Automate. Transform.",
+    "philosophyText": "I don't do generic solutions — every project has its own identity. Web development + AI automation working together to make your business more efficient and memorable.",
+    "closing": "Design is my essence, coding is my tool, automation is my edge. Every line of code is a decision that drives your business forward."
   },
   "projects": {
     "sectionBadge": "Featured Work",
     "sectionHighlight": "Featured",
-    "sectionDesc": "A curated collection of digital experiences where innovation meets exceptional design.",
-    "pageSubtitle": "A selection of my work and experiments",
+    "sectionDesc": "A curated collection of digital experiences and AI where innovation powers your business.",
+    "pageSubtitle": "A selection of my work — web development and AI automation",
     "seeAll": "See All Projects",
     "demo": "Demo",
     "github": "GitHub",
@@ -87,7 +87,7 @@
   },
   "contact": {
     "title": "Contact",
-    "subtitle": "Let's build something amazing together"
+    "subtitle": "Let's transform your business with smart technology"
   },
   "navMenu": {
     "open": "Open menu",
