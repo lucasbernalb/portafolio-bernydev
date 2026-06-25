@@ -18,6 +18,27 @@ function defaultLead() {
   }
 }
 
+const SENSITIVE_PATTERNS = [
+  /---LEAD-DATA---/,
+  /\{"nombre":/,
+  /system prompt/i,
+  /instrucciones internas/i,
+  /prompt del sistema/i,
+  /internal instructions/i,
+  /```[\s\S]*?(import |function |process\.env|api[Kk]ey)/,
+  /process\.env\./,
+  /OPENROUTER_API_KEY/i,
+  /MAKE_WEBHOOK_URL/i,
+  /sk-or-v1-/,
+]
+
+function sanitizeReply(reply: string): string {
+  if (SENSITIVE_PATTERNS.some((p) => p.test(reply))) {
+    return "No puedo compartir esa información. Decime en qué puedo ayudarte con tu proyecto."
+  }
+  return reply
+}
+
 function parseLeadFromContent(content: string): {
   reply: string
   lead: ChatResponse["lead"]
@@ -26,7 +47,8 @@ function parseLeadFromContent(content: string): {
   const lastIndex = content.lastIndexOf(delimiter)
 
   if (lastIndex === -1) {
-    return { reply: content.trim(), lead: defaultLead() }
+    const safe = sanitizeReply(content.trim())
+    return { reply: safe, lead: defaultLead() }
   }
 
   const reply = content.substring(0, lastIndex).trim()
@@ -45,9 +67,10 @@ function parseLeadFromContent(content: string): {
     if (typeof parsed.resumen === "string") lead.resumen = parsed.resumen.slice(0, 250)
     if (typeof parsed.leadCompleto === "boolean") lead.leadCompleto = parsed.leadCompleto
 
-    return { reply, lead }
+    return { reply: sanitizeReply(reply), lead }
   } catch {
-    return { reply, lead: defaultLead() }
+    const safe = sanitizeReply(reply)
+    return { reply: safe, lead: defaultLead() }
   }
 }
 
