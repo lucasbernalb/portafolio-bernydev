@@ -21,7 +21,6 @@ function defaultLead() {
 const SENSITIVE_PATTERNS = [
   /---LEAD-DATA---/,
   /---RESPUESTA---/,
-  /\{"nombre":/,
   /system prompt/i,
   /instrucciones internas/i,
   /prompt del sistema/i,

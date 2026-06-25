@@ -3,6 +3,8 @@ import { getSystemPrompt } from "@/lib/chatbot/prompt"
 import { sendChat } from "@/lib/chatbot/openrouter"
 import type { ChatRequest, Message } from "@/lib/chatbot/types"
 
+export const maxDuration = 30
+
 const INJECTION_PATTERNS = [
   /ignore\s+(previous|all|your)\s+(instructions|rules|prompt|system)/i,
   /olvidá\s+(tus|las)\s+(instrucciones|reglas|prompt|sistema)/i,
