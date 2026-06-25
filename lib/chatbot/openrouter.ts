@@ -20,6 +20,7 @@ function defaultLead() {
 
 const SENSITIVE_PATTERNS = [
   /---LEAD-DATA---/,
+  /---RESPUESTA---/,
   /\{"nombre":/,
   /system prompt/i,
   /instrucciones internas/i,
@@ -33,10 +34,11 @@ const SENSITIVE_PATTERNS = [
 ]
 
 function sanitizeReply(reply: string): string {
-  if (SENSITIVE_PATTERNS.some((p) => p.test(reply))) {
+  const cleaned = reply.replace(/---RESPUESTA---/gi, "").trim()
+  if (SENSITIVE_PATTERNS.some((p) => p.test(cleaned))) {
     return "No puedo compartir esa información. Decime en qué puedo ayudarte con tu proyecto."
   }
-  return reply
+  return cleaned
 }
 
 function parseLeadFromContent(content: string): {

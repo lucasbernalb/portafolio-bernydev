@@ -102,7 +102,9 @@ export default function AIAssistant() {
 
       const data = await res.json();
 
-      console.log("[AIAssistant] Lead:", data.lead);
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[AIAssistant] Lead:", data.lead);
+      }
 
       if (data.lead?.leadCompleto === true && !leadSent) {
         try {
@@ -114,7 +116,9 @@ export default function AIAssistant() {
 
           if (leadRes.ok) {
             setLeadSent(true);
-            console.log("[AIAssistant] Lead enviado a Make exitosamente");
+            if (process.env.NODE_ENV !== "production") {
+              console.log("[AIAssistant] Lead enviado a Make exitosamente");
+            }
           } else {
             console.error("[AIAssistant] Error al enviar lead:", leadRes.status);
           }
