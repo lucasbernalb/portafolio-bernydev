@@ -80,12 +80,12 @@ function isModelAvailableError(error: unknown): boolean {
   return false
 }
 
-export async function sendChat(messages: Message[]): Promise<ChatResponse> {
+export async function sendChat(messages: Message[], signal?: AbortSignal): Promise<ChatResponse> {
   const apiKey = process.env.OPENROUTER_API_KEY
 
   if (!apiKey) {
     return {
-      reply: "Ups, parece que el asistente no está configurado correctamente. Por favor, contactanos directamente a través del formulario de contacto.",
+      reply: "No se pudo procesar el mensaje. Por favor, contactanos directamente a través del formulario de contacto.",
       lead: defaultLead(),
     }
   }
@@ -104,11 +104,12 @@ export async function sendChat(messages: Message[]): Promise<ChatResponse> {
       temperature: 0.7,
       max_tokens: 1024,
     }),
+    signal,
   })
 
   if (!res.ok) {
-    const errorBody = await res.text().catch(() => "unknown error")
-    const error = new Error(`OpenRouter ${res.status}: ${errorBody}`)
+    await res.text().catch(() => undefined)
+    const error = new Error(`OpenRouter request failed: HTTP ${res.status}`)
 
     if (isModelAvailableError(error)) {
       return {

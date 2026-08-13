@@ -3,8 +3,13 @@ export interface Message {
   content: string
 }
 
+export type ChatUserMessage = {
+  role: "user"
+  content: string
+}
+
 export interface ChatRequest {
-  messages: Message[]
+  messages: ChatUserMessage[]
   lang?: "es" | "en"
 }
 

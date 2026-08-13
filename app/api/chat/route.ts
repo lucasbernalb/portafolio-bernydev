@@ -1,9 +1,25 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getSystemPrompt } from "@/lib/chatbot/prompt"
 import { sendChat } from "@/lib/chatbot/openrouter"
-import type { ChatRequest, Message } from "@/lib/chatbot/types"
+import { validateChatBody } from "@/lib/chatbot/validation"
+import {
+  CHAT_RATE_LIMIT,
+  CHAT_RATE_WINDOW_MS,
+  chatRateLimiter,
+  getClientIp,
+} from "@/lib/chatbot/rate-limit"
+import {
+  createSessionId,
+  getSessionMessages,
+  isValidSessionId,
+  updateSession,
+} from "@/lib/chatbot/session"
+import type { Message } from "@/lib/chatbot/types"
 
 export const maxDuration = 30
+
+const SESSION_COOKIE = "bernydev-chat-session"
+const SESSION_COOKIE_MAX_AGE = 60 * 60
 
 const INJECTION_PATTERNS = [
   /ignore\s+(previous|all|your)\s+(instructions|rules|prompt|system)/i,
@@ -23,60 +39,133 @@ const INJECTION_PATTERNS = [
   /tell me the format/i,
 ]
 
-function hasInjection(messages: Message[]): boolean {
-  return messages.some((m) =>
-    m.role === "user" && INJECTION_PATTERNS.some((p) => p.test(m.content))
-  )
+function hasInjection(message: Message): boolean {
+  return INJECTION_PATTERNS.some((pattern) => pattern.test(message.content))
+}
+
+function badRequest(): NextResponse {
+  return NextResponse.json({ error: "Datos de entrada inválidos" }, { status: 400 })
+}
+
+function getSessionId(req: NextRequest): { sessionId: string; isNew: boolean } {
+  const cookieSessionId = req.cookies.get(SESSION_COOKIE)?.value
+
+  if (cookieSessionId && isValidSessionId(cookieSessionId)) {
+    return { sessionId: cookieSessionId, isNew: false }
+  }
+
+  return { sessionId: createSessionId(), isNew: true }
+}
+
+function withSessionCookie(
+  response: NextResponse,
+  sessionId: string,
+  isNew: boolean,
+): NextResponse {
+  if (isNew) {
+    response.cookies.set({
+      name: SESSION_COOKIE,
+      value: sessionId,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: SESSION_COOKIE_MAX_AGE,
+    })
+  }
+  return response
 }
 
 export async function POST(req: NextRequest) {
+  let body: unknown
+
   try {
-    const body: ChatRequest = await req.json()
+    body = await req.json()
+  } catch {
+    return badRequest()
+  }
 
-    if (!body.messages || !Array.isArray(body.messages) || body.messages.length === 0) {
-      return NextResponse.json(
-        { error: "messages es requerido y debe ser un array no vacío" },
-        { status: 400 }
-      )
-    }
+  const clientIp = getClientIp(req)
+  const rateLimit = chatRateLimiter.check(
+    clientIp,
+    CHAT_RATE_LIMIT,
+    CHAT_RATE_WINDOW_MS,
+  )
 
-    if (body.messages.length > 50) {
-      return NextResponse.json(
-        { error: "Demasiados mensajes (máximo 50)" },
-        { status: 400 }
-      )
-    }
-
-    if (body.messages.some((m: Message) => m.content.length > 4000)) {
-      return NextResponse.json(
-        { error: "Mensaje demasiado largo (máximo 4000 caracteres)" },
-        { status: 400 }
-      )
-    }
-
-    if (hasInjection(body.messages)) {
-      return NextResponse.json({
-        reply: "No puedo procesar esa solicitud. Contame sobre tu proyecto y te ayudo con gusto.",
-        lead: { nombre: null, email: null, telefono: null, servicio: null, urgencia: "baja", score: 1, resumen: "", leadCompleto: false },
-      })
-    }
-
-    const lang = body.lang === "en" ? "en" : "es"
-    const systemPrompt = getSystemPrompt(lang)
-
-    const fullMessages: Message[] = [
-      { role: "system", content: systemPrompt },
-      ...body.messages,
-    ]
-
-    const result = await sendChat(fullMessages)
-
-    return NextResponse.json(result)
-  } catch (error) {
-    console.error("Error en /api/chat:", error)
+  if (!rateLimit.allowed) {
     return NextResponse.json(
-      { error: "Error interno del servidor" },
-      { status: 500 }
+      { error: "Demasiadas solicitudes. Inténtalo más tarde." },
+      { status: 429 },
     )
+  }
+
+  const validation = validateChatBody(body)
+  if (!validation.ok || validation.data.messages.length !== 1) {
+    return badRequest()
+  }
+
+  const userMessage: Message = validation.data.messages[0]
+  const { sessionId, isNew } = getSessionId(req)
+
+  if (hasInjection(userMessage)) {
+    const response = NextResponse.json({
+      reply: "No puedo procesar esa solicitud. Contame sobre tu proyecto y te ayudo con gusto.",
+      lead: {
+        nombre: null,
+        email: null,
+        telefono: null,
+        servicio: null,
+        urgencia: "baja",
+        score: 1,
+        resumen: "",
+        leadCompleto: false,
+      },
+    })
+    return withSessionCookie(response, sessionId, isNew)
+  }
+
+  const systemMessage: Message = {
+    role: "system",
+    content: getSystemPrompt(validation.data.lang),
+  }
+  const history = getSessionMessages(sessionId)
+  const modelMessages: Message[] = [systemMessage, ...history, userMessage]
+
+  updateSession(sessionId, [...history, userMessage])
+
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 25_000)
+
+  try {
+    const result = await sendChat(modelMessages, controller.signal)
+    updateSession(sessionId, [
+      ...getSessionMessages(sessionId),
+      { role: "assistant", content: result.reply },
+    ])
+
+    return withSessionCookie(NextResponse.json(result), sessionId, isNew)
+  } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") {
+      return withSessionCookie(
+        NextResponse.json(
+          { error: "El asistente tardó demasiado en responder." },
+          { status: 408 },
+        ),
+        sessionId,
+        isNew,
+      )
+    }
+
+    console.error("Error en /api/chat", {
+      timestamp: new Date().toISOString(),
+      errorName: error instanceof Error ? error.name : "UnknownError",
+    })
+    return withSessionCookie(
+      NextResponse.json({ error: "Error interno del servidor" }, { status: 500 }),
+      sessionId,
+      isNew,
+    )
+  } finally {
+    clearTimeout(timeout)
   }
 }

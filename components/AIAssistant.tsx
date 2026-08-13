@@ -84,11 +84,7 @@ export default function AIAssistant() {
     if (!text || isTyping) return;
 
     setInput("");
-    const updatedMessages: Message[] = [
-      ...messages,
-      { role: "user", content: text },
-    ];
-    setMessages(updatedMessages);
+    setMessages((prev) => [...prev, { role: "user", content: text }]);
     setIsTyping(true);
 
     try {
@@ -98,7 +94,10 @@ export default function AIAssistant() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=utf-8" },
-        body: JSON.stringify({ messages: updatedMessages, lang }),
+        body: JSON.stringify({
+          messages: [{ role: "user", content: text }],
+          lang,
+        }),
         signal: controller.signal,
       });
 

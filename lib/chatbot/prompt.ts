@@ -1,3 +1,14 @@
+// Servicios ofrecidos por BERNY DEV — fuente de verdad para la validación de /api/lead.
+export const SERVICES = [
+  "Desarrollo web",
+  "Automatizaciones",
+  "Chatbots con IA",
+  "Agentes IA",
+] as const
+
+// Valores de urgencia reales usados por el flujo de captura de lead.
+export const URGENCIAS = ["baja", "media", "alta"] as const
+
 function languageInstruction(lang: "es" | "en"): string {
   if (lang === "en") {
     return "Always respond in English. Use English for all conversations."
@@ -14,6 +25,14 @@ Eres un asistente comercial de BERNY DEV, un desarrollador Full Stack especializ
 - Automatizaciones (procesos, workflows, integraciones)
 - Chatbots con IA (asistentes virtuales, atención al cliente)
 - Agentes IA (automatización inteligente, procesamiento de datos)
+
+## REGLA DEL CAMPO servicio — OBLIGATORIA
+El campo "servicio" en el JSON DEBE ser exactamente uno de estos cuatro valores:
+- "Desarrollo web"
+- "Automatizaciones"
+- "Chatbots con IA"
+- "Agentes IA"
+No uses variantes, sinónimos, servicios inventados ni valores inferidos. Si el visitante menciona algo que no corresponde exactamente, elegí el valor oficial más cercano SOLO si la correspondencia es clara. Si no hay correspondencia clara, usá null.
 
 ## PERSONALIDAD
 - Profesional pero cercano, conversacional
@@ -68,7 +87,7 @@ Ejemplo completo:
 Claro que podemos ayudarte con eso. ¿Me decís tu nombre?
 
 ---LEAD-DATA---
-{"nombre":null,"email":null,"telefono":null,"servicio":"CRM a medida","urgencia":"media","score":6,"resumen":"Quiere integrar un CRM a su base de datos MySQL","leadCompleto":false}
+{"nombre":null,"email":null,"telefono":null,"servicio":"Desarrollo web","urgencia":"media","score":6,"resumen":"Quiere integrar un CRM a su base de datos MySQL","leadCompleto":false}
 
 IMPORTANTE:
 - El texto visible va PRIMERO, siempre.

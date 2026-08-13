@@ -1,52 +1,87 @@
 import { NextRequest, NextResponse } from "next/server"
-import type { LeadData } from "@/lib/chatbot/types"
+import { validateLeadBody } from "@/lib/chatbot/validation"
+import {
+  getClientIp,
+  leadRateLimiter,
+  LEAD_RATE_LIMIT,
+  LEAD_RATE_WINDOW_MS,
+} from "@/lib/chatbot/rate-limit"
+
+function badRequest(): NextResponse {
+  return NextResponse.json(
+    { success: false, error: "Datos de entrada inválidos" },
+    { status: 400 },
+  )
+}
 
 export async function POST(req: NextRequest) {
+  let body: unknown
+
   try {
-    const lead: LeadData = await req.json()
+    body = await req.json()
+  } catch {
+    return badRequest()
+  }
 
-    if (lead.score < 1 || lead.score > 10) {
-      return NextResponse.json(
-        { success: false, error: "score debe estar entre 1 y 10" },
-        { status: 400 }
-      )
-    }
+  const clientIp = getClientIp(req)
+  const rateLimit = leadRateLimiter.check(
+    clientIp,
+    LEAD_RATE_LIMIT,
+    LEAD_RATE_WINDOW_MS,
+  )
 
-    if (lead.resumen && lead.resumen.length > 250) {
-      lead.resumen = lead.resumen.slice(0, 250)
-    }
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { success: false, error: "Demasiadas solicitudes. Inténtalo más tarde." },
+      { status: 429 },
+    )
+  }
 
-    const webhookUrl = process.env.MAKE_WEBHOOK_URL
+  const validation = validateLeadBody(body)
+  if (!validation.ok) return badRequest()
 
-    if (!webhookUrl) {
-      return NextResponse.json(
-        { success: false, error: "MAKE_WEBHOOK_URL no configurado" },
-        { status: 500 }
-      )
-    }
+  const webhookUrl = process.env.MAKE_WEBHOOK_URL
+  if (!webhookUrl) {
+    console.error("Error en /api/lead", {
+      timestamp: new Date().toISOString(),
+      reason: "webhook not configured",
+    })
+    return NextResponse.json(
+      { success: false, error: "Error interno del servidor" },
+      { status: 500 },
+    )
+  }
 
+  try {
     const res = await fetch(webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json; charset=utf-8" },
-      body: JSON.stringify(lead).replace(
+      body: JSON.stringify(validation.data).replace(
         /[\u0080-\uFFFF]/g,
-        (c) => "\\u" + c.charCodeAt(0).toString(16).padStart(4, "0")
+        (character) => "\\u" + character.charCodeAt(0).toString(16).padStart(4, "0"),
       ),
     })
 
     if (!res.ok) {
+      console.error("Error en /api/lead", {
+        timestamp: new Date().toISOString(),
+        status: res.status,
+      })
       return NextResponse.json(
-        { success: false, error: `Make respondió con ${res.status}` },
-        { status: 502 }
+        { success: false, error: "Error interno del servidor" },
+        { status: 502 },
       )
     }
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error("Error al enviar lead a Make:", error)
+    console.error("Error en /api/lead", {
+      timestamp: new Date().toISOString(),
+      errorName: error instanceof Error ? error.name : "UnknownError",
+    })
     return NextResponse.json(
       { success: false, error: "Error interno del servidor" },
-      { status: 500 }
+      { status: 500 },
     )
   }
 }
