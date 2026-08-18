@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { isJsonContentType, jsonResponse, readJsonBody } from "@/lib/api/request"
 import { getSystemPrompt } from "@/lib/chatbot/prompt"
 import { sendChat } from "@/lib/chatbot/openrouter"
-import { validateChatBody } from "@/lib/chatbot/validation"
+import { normalizeLeadCandidate, validateChatBody } from "@/lib/chatbot/validation"
 import {
   CHAT_RATE_LIMIT,
   CHAT_RATE_WINDOW_MS,
@@ -146,12 +146,17 @@ export async function POST(req: NextRequest) {
 
   try {
     const result = await sendChat(modelMessages, controller.signal)
+    const lead = normalizeLeadCandidate(result.lead)
     updateSession(sessionId, [
       ...getSessionMessages(sessionId),
       { role: "assistant", content: result.reply },
     ])
 
-    return withSessionCookie(jsonResponse(result), sessionId, isNew)
+    return withSessionCookie(
+      jsonResponse({ reply: result.reply, lead }),
+      sessionId,
+      isNew,
+    )
   } catch (error) {
     if (error instanceof Error && error.name === "AbortError") {
       return withSessionCookie(

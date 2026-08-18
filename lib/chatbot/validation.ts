@@ -1,3 +1,4 @@
+import type { LeadCandidate, LeadData } from "./types"
 import { SERVICES, URGENCIAS } from "./prompt"
 
 const MAX_CHAT_MESSAGES = 50
@@ -55,6 +56,57 @@ export interface ValidatedLead {
   score: number
   resumen: string
   leadCompleto: boolean
+}
+
+export function normalizeLeadCandidate(candidate: unknown): LeadData {
+  const source = candidate && typeof candidate === "object"
+    ? candidate as Partial<LeadCandidate>
+    : {}
+
+  const nombreResult = cleanString(source.nombre, MAX_NOMBRE)
+  const nombre = nombreResult.ok ? nombreResult.value : null
+
+  const emailResult = cleanString(source.email, MAX_EMAIL)
+  const email = emailResult.ok && emailResult.value !== null && EMAIL_RE.test(emailResult.value)
+    ? emailResult.value
+    : null
+
+  const telefonoResult = cleanString(source.telefono, MAX_TELEFONO)
+  const telefono = telefonoResult.ok ? telefonoResult.value : null
+
+  const servicioResult = cleanString(source.servicio, MAX_SERVICIO)
+  const servicio = servicioResult.ok && servicioResult.value !== null && SERVICES.includes(
+    servicioResult.value as typeof SERVICES[number],
+  )
+    ? servicioResult.value
+    : null
+
+  const urgencia = URGENCIAS.includes(source.urgencia as typeof URGENCIAS[number])
+    ? source.urgencia as typeof URGENCIAS[number]
+    : "baja"
+
+  const score = typeof source.score === "number" && Number.isInteger(source.score)
+    && source.score >= 1 && source.score <= 10
+    ? source.score
+    : 1
+
+  const resumen = typeof source.resumen === "string"
+    ? (() => {
+        const cleaned = source.resumen!.replace(CONTROL_CHARS_RE, "").trim()
+        return cleaned.length <= MAX_RESUMEN ? cleaned : ""
+      })()
+    : ""
+
+  return {
+    nombre,
+    email,
+    telefono,
+    servicio,
+    urgencia,
+    score,
+    resumen,
+    leadCompleto: Boolean(nombre) && Boolean(email || telefono) && Boolean(servicio),
+  }
 }
 
 function cleanString(value: unknown, maxLen: number): { ok: true; value: string | null } | { ok: false } {

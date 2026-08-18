@@ -1,4 +1,4 @@
-import type { Message, ChatResponse } from "./types"
+import type { ChatCandidateResponse, LeadCandidate, Message } from "./types"
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 const MODEL = "google/gemini-2.5-flash"
@@ -42,7 +42,7 @@ function sanitizeReply(reply: string): string {
 
 function parseLeadFromContent(content: string): {
   reply: string
-  lead: ChatResponse["lead"]
+  lead: LeadCandidate
 } {
   const delimiter = "---LEAD-DATA---"
   const lastIndex = content.lastIndexOf(delimiter)
@@ -80,7 +80,7 @@ function isModelAvailableError(error: unknown): boolean {
   return false
 }
 
-export async function sendChat(messages: Message[], signal?: AbortSignal): Promise<ChatResponse> {
+export async function sendChat(messages: Message[], signal?: AbortSignal): Promise<ChatCandidateResponse> {
   const apiKey = process.env.OPENROUTER_API_KEY
 
   if (!apiKey) {

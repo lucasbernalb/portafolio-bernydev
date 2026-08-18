@@ -18,6 +18,22 @@ export interface ChatResponse {
   lead: LeadData
 }
 
+export interface ChatCandidateResponse {
+  reply: string
+  lead: LeadCandidate
+}
+
+export interface LeadCandidate {
+  nombre: string | null
+  email: string | null
+  telefono: string | null
+  servicio: string | null
+  urgencia: "baja" | "media" | "alta"
+  score: number
+  resumen: string
+  leadCompleto: boolean
+}
+
 export interface LeadData {
   nombre: string | null
   email: string | null
