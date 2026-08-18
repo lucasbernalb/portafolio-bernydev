@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { isJsonContentType, jsonResponse, readJsonBody } from "@/lib/api/request"
 import { validateLeadBody } from "@/lib/chatbot/validation"
 import {
   getClientIp,
@@ -7,21 +8,35 @@ import {
   LEAD_RATE_WINDOW_MS,
 } from "@/lib/chatbot/rate-limit"
 
+const MAX_LEAD_BODY_BYTES = 8 * 1024
+
 function badRequest(): NextResponse {
-  return NextResponse.json(
+  return jsonResponse(
     { success: false, error: "Datos de entrada inválidos" },
     { status: 400 },
   )
 }
 
 export async function POST(req: NextRequest) {
-  let body: unknown
+  if (!isJsonContentType(req)) {
+    return jsonResponse(
+      { success: false, error: "Unsupported media type" },
+      { status: 415 },
+    )
+  }
 
-  try {
-    body = await req.json()
-  } catch {
+  const bodyResult = await readJsonBody(req, MAX_LEAD_BODY_BYTES)
+  if (!bodyResult.ok && bodyResult.reason === "too-large") {
+    return jsonResponse(
+      { success: false, error: "Request body too large" },
+      { status: 413 },
+    )
+  }
+  if (!bodyResult.ok) {
     return badRequest()
   }
+
+  const body = bodyResult.value
 
   const clientIp = getClientIp(req)
   const rateLimit = leadRateLimiter.check(
@@ -31,7 +46,7 @@ export async function POST(req: NextRequest) {
   )
 
   if (!rateLimit.allowed) {
-    return NextResponse.json(
+    return jsonResponse(
       { success: false, error: "Demasiadas solicitudes. Inténtalo más tarde." },
       { status: 429 },
     )
@@ -46,7 +61,7 @@ export async function POST(req: NextRequest) {
       timestamp: new Date().toISOString(),
       reason: "webhook not configured",
     })
-    return NextResponse.json(
+    return jsonResponse(
       { success: false, error: "Error interno del servidor" },
       { status: 500 },
     )
@@ -67,19 +82,19 @@ export async function POST(req: NextRequest) {
         timestamp: new Date().toISOString(),
         status: res.status,
       })
-      return NextResponse.json(
+      return jsonResponse(
         { success: false, error: "Error interno del servidor" },
         { status: 502 },
       )
     }
 
-    return NextResponse.json({ success: true })
+    return jsonResponse({ success: true })
   } catch (error) {
     console.error("Error en /api/lead", {
       timestamp: new Date().toISOString(),
       errorName: error instanceof Error ? error.name : "UnknownError",
     })
-    return NextResponse.json(
+    return jsonResponse(
       { success: false, error: "Error interno del servidor" },
       { status: 500 },
     )

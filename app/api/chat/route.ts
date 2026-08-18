@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { isJsonContentType, jsonResponse, readJsonBody } from "@/lib/api/request"
 import { getSystemPrompt } from "@/lib/chatbot/prompt"
 import { sendChat } from "@/lib/chatbot/openrouter"
 import { validateChatBody } from "@/lib/chatbot/validation"
@@ -18,6 +19,7 @@ import type { Message } from "@/lib/chatbot/types"
 
 export const maxDuration = 30
 
+const MAX_CHAT_BODY_BYTES = 32 * 1024
 const SESSION_COOKIE = "bernydev-chat-session"
 const SESSION_COOKIE_MAX_AGE = 60 * 60
 
@@ -44,7 +46,7 @@ function hasInjection(message: Message): boolean {
 }
 
 function badRequest(): NextResponse {
-  return NextResponse.json({ error: "Datos de entrada inválidos" }, { status: 400 })
+  return jsonResponse({ error: "Datos de entrada inválidos" }, { status: 400 })
 }
 
 function getSessionId(req: NextRequest): { sessionId: string; isNew: boolean } {
@@ -77,13 +79,19 @@ function withSessionCookie(
 }
 
 export async function POST(req: NextRequest) {
-  let body: unknown
+  if (!isJsonContentType(req)) {
+    return jsonResponse({ error: "Unsupported media type" }, { status: 415 })
+  }
 
-  try {
-    body = await req.json()
-  } catch {
+  const bodyResult = await readJsonBody(req, MAX_CHAT_BODY_BYTES)
+  if (!bodyResult.ok && bodyResult.reason === "too-large") {
+    return jsonResponse({ error: "Request body too large" }, { status: 413 })
+  }
+  if (!bodyResult.ok) {
     return badRequest()
   }
+
+  const body = bodyResult.value
 
   const clientIp = getClientIp(req)
   const rateLimit = chatRateLimiter.check(
@@ -93,7 +101,7 @@ export async function POST(req: NextRequest) {
   )
 
   if (!rateLimit.allowed) {
-    return NextResponse.json(
+    return jsonResponse(
       { error: "Demasiadas solicitudes. Inténtalo más tarde." },
       { status: 429 },
     )
@@ -108,7 +116,7 @@ export async function POST(req: NextRequest) {
   const { sessionId, isNew } = getSessionId(req)
 
   if (hasInjection(userMessage)) {
-    const response = NextResponse.json({
+    const response = jsonResponse({
       reply: "No puedo procesar esa solicitud. Contame sobre tu proyecto y te ayudo con gusto.",
       lead: {
         nombre: null,
@@ -143,11 +151,11 @@ export async function POST(req: NextRequest) {
       { role: "assistant", content: result.reply },
     ])
 
-    return withSessionCookie(NextResponse.json(result), sessionId, isNew)
+    return withSessionCookie(jsonResponse(result), sessionId, isNew)
   } catch (error) {
     if (error instanceof Error && error.name === "AbortError") {
       return withSessionCookie(
-        NextResponse.json(
+        jsonResponse(
           { error: "El asistente tardó demasiado en responder." },
           { status: 408 },
         ),
@@ -161,7 +169,7 @@ export async function POST(req: NextRequest) {
       errorName: error instanceof Error ? error.name : "UnknownError",
     })
     return withSessionCookie(
-      NextResponse.json({ error: "Error interno del servidor" }, { status: 500 }),
+      jsonResponse({ error: "Error interno del servidor" }, { status: 500 }),
       sessionId,
       isNew,
     )
