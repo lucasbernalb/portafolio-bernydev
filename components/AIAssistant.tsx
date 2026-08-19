@@ -51,7 +51,6 @@ export default function AIAssistant() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [hintIndex, setHintIndex] = useState(0);
-  const [leadSent, setLeadSent] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -68,7 +67,6 @@ export default function AIAssistant() {
 
   useEffect(() => {
     setMessages([{ role: "assistant", content: t("chatbot.welcome") }]);
-    setLeadSent(false);
   }, [lang, t]);
 
   useEffect(() => {
@@ -106,31 +104,6 @@ export default function AIAssistant() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const data = await res.json();
-
-      if (process.env.NODE_ENV !== "production") {
-        console.log("[AIAssistant] Lead:", data.lead);
-      }
-
-      if (data.lead?.leadCompleto === true && !leadSent) {
-        try {
-          const leadRes = await fetch("/api/lead", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data.lead),
-          });
-
-          if (leadRes.ok) {
-            setLeadSent(true);
-            if (process.env.NODE_ENV !== "production") {
-              console.log("[AIAssistant] Lead enviado a Make exitosamente");
-            }
-          } else {
-            console.error("[AIAssistant] Error al enviar lead:", leadRes.status);
-          }
-        } catch (err) {
-          console.error("[AIAssistant] Error en fetch de lead:", err);
-        }
-      }
 
       setMessages((prev) => [
         ...prev,

@@ -1,4 +1,4 @@
-// Servicios ofrecidos por BERNY DEV — fuente de verdad para la validación de /api/lead.
+// Servicios ofrecidos por BERNY DEV — fuente de verdad para la validación de leads.
 export const SERVICES = [
   "Desarrollo web",
   "Automatizaciones",

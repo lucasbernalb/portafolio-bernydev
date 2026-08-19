@@ -3,10 +3,14 @@ import { isJsonContentType, jsonResponse, readJsonBody } from "@/lib/api/request
 import { getSystemPrompt } from "@/lib/chatbot/prompt"
 import { sendChat } from "@/lib/chatbot/openrouter"
 import { normalizeLeadCandidate, validateChatBody } from "@/lib/chatbot/validation"
+import { deliverLead } from "@/lib/chatbot/lead-delivery"
 import {
   CHAT_RATE_LIMIT,
   CHAT_RATE_WINDOW_MS,
   chatRateLimiter,
+  LEAD_RATE_LIMIT,
+  LEAD_RATE_WINDOW_MS,
+  leadRateLimiter,
   getClientIp,
 } from "@/lib/chatbot/rate-limit"
 import {
@@ -147,6 +151,24 @@ export async function POST(req: NextRequest) {
   try {
     const result = await sendChat(modelMessages, controller.signal)
     const lead = normalizeLeadCandidate(result.lead)
+
+    if (lead.leadCompleto) {
+      const leadRateLimit = leadRateLimiter.check(
+        `${clientIp}:${sessionId}`,
+        LEAD_RATE_LIMIT,
+        LEAD_RATE_WINDOW_MS,
+      )
+
+      if (leadRateLimit.allowed) {
+        const delivery = await deliverLead(lead, controller.signal, sessionId)
+        if (!delivery.ok) {
+          console.error("Error en entrega server-side de lead", {
+            reason: delivery.reason,
+          })
+        }
+      }
+    }
+
     updateSession(sessionId, [
       ...getSessionMessages(sessionId),
       { role: "assistant", content: result.reply },
