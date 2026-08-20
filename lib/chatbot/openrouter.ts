@@ -5,6 +5,46 @@ const MODEL = "google/gemini-2.5-flash"
 const SITE_URL = "https://bernydev.vercel.app"
 const SITE_NAME = "BERNY DEV"
 
+const RESPONSE_FORMAT = {
+  type: "json_schema",
+  json_schema: {
+    name: "chat_response",
+    strict: true,
+    schema: {
+      type: "object",
+      properties: {
+        reply: { type: "string" },
+        lead: {
+          type: "object",
+          properties: {
+            nombre: { type: ["string", "null"] },
+            email: { type: ["string", "null"] },
+            telefono: { type: ["string", "null"] },
+            servicio: { type: ["string", "null"] },
+            urgencia: { type: "string", enum: ["baja", "media", "alta"] },
+            score: { type: "integer", minimum: 1, maximum: 10 },
+            resumen: { type: "string" },
+            leadCompleto: { type: "boolean" },
+          },
+          required: [
+            "nombre",
+            "email",
+            "telefono",
+            "servicio",
+            "urgencia",
+            "score",
+            "resumen",
+            "leadCompleto",
+          ],
+          additionalProperties: false,
+        },
+      },
+      required: ["reply", "lead"],
+      additionalProperties: false,
+    },
+  },
+} as const
+
 function defaultLead() {
   return {
     nombre: null,
@@ -40,38 +80,53 @@ function sanitizeReply(reply: string): string {
   return cleaned
 }
 
-function parseLeadFromContent(content: string): {
+function parseStructuredContent(content: string): {
+  reply: string
+  lead: LeadCandidate
+} {
+  const parsed: unknown = JSON.parse(content)
+  if (!parsed || typeof parsed !== "object") throw new Error("Invalid structured response")
+
+  const response = parsed as Record<string, unknown>
+  if (typeof response.reply !== "string" || !response.lead || typeof response.lead !== "object") {
+    throw new Error("Incomplete structured response")
+  }
+
+  return {
+    reply: sanitizeReply(response.reply),
+    lead: response.lead as LeadCandidate,
+  }
+}
+
+function parseLegacyContent(content: string): {
   reply: string
   lead: LeadCandidate
 } {
   const delimiter = "---LEAD-DATA---"
   const lastIndex = content.lastIndexOf(delimiter)
-
-  if (lastIndex === -1) {
-    const safe = sanitizeReply(content.trim())
-    return { reply: safe, lead: defaultLead() }
-  }
+  if (lastIndex === -1) return { reply: sanitizeReply(content.trim()), lead: defaultLead() }
 
   const reply = content.substring(0, lastIndex).trim()
   const jsonPart = content.substring(lastIndex + delimiter.length).trim()
 
   try {
-    const parsed = JSON.parse(jsonPart)
-    const lead = defaultLead()
-
-    if (typeof parsed.nombre === "string") lead.nombre = parsed.nombre
-    if (typeof parsed.email === "string") lead.email = parsed.email
-    if (typeof parsed.telefono === "string") lead.telefono = parsed.telefono
-    if (typeof parsed.servicio === "string") lead.servicio = parsed.servicio
-    if (["baja", "media", "alta"].includes(parsed.urgencia)) lead.urgencia = parsed.urgencia
-    if (typeof parsed.score === "number" && parsed.score >= 1 && parsed.score <= 10) lead.score = parsed.score
-    if (typeof parsed.resumen === "string") lead.resumen = parsed.resumen.slice(0, 250)
-    if (typeof parsed.leadCompleto === "boolean") lead.leadCompleto = parsed.leadCompleto
-
-    return { reply: sanitizeReply(reply), lead }
+    return {
+      reply: sanitizeReply(reply),
+      lead: JSON.parse(jsonPart) as LeadCandidate,
+    }
   } catch {
-    const safe = sanitizeReply(reply)
-    return { reply: safe, lead: defaultLead() }
+    return { reply: sanitizeReply(reply), lead: defaultLead() }
+  }
+}
+
+function parseLeadFromContent(content: string): {
+  reply: string
+  lead: LeadCandidate
+} {
+  try {
+    return parseStructuredContent(content)
+  } catch {
+    return parseLegacyContent(content)
   }
 }
 
@@ -103,6 +158,8 @@ export async function sendChat(messages: Message[], signal?: AbortSignal): Promi
       messages,
       temperature: 0.7,
       max_tokens: 1024,
+      response_format: RESPONSE_FORMAT,
+      provider: { require_parameters: true },
     }),
     signal,
   })
