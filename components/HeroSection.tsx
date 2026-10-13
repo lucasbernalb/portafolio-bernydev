@@ -29,7 +29,7 @@ export default function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0A0F]"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -40,8 +40,8 @@ export default function HeroSection() {
           className="object-cover opacity-[0.08] blur-[3px] scale-110"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0F] via-[#0A0A0F]/95 to-[#0A0A0F]" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0F] via-transparent to-[#0A0A0F]/80" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0F]/70 via-[#0A0A0F]/35 to-[#0A0A0F]/70" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0F]/75 via-transparent to-[#0A0A0F]/55" />
       </div>
 
       {/* Background Logo */}

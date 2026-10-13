@@ -4,6 +4,7 @@ import "./globals.css";
 import BodyWrapper from "@/components/BodyWrapper";
 import RouteTransitionLoader from "@/components/RouteTransitionLoader";
 import AIAssistant from "@/components/AIAssistant";
+import SceneBackground from "@/components/SceneBackground";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 
 const inter = Inter({
@@ -50,6 +51,7 @@ export default function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <body className={`${inter.variable} font-sans antialiased bg-[#0A0A0F] text-white overflow-x-hidden`}>
+        <SceneBackground />
         <LanguageProvider>
           <BodyWrapper>{children}</BodyWrapper>
         <RouteTransitionLoader />

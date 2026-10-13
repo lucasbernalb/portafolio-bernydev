@@ -30,7 +30,7 @@ const projects = [
     gradient: "from-amber-500 via-orange-500 to-amber-600",
     accent: "#f59e0b",
     github: "https://github.com/lucasbernalb/ameli-pastoreo",
-    deploy: "https://ameli-pastoreo.vercel.app/",
+    deploy: "https://www.ameli.uy/",
     status: null,
     image: "/proyectos/ameli.jpg",
   },
@@ -172,8 +172,8 @@ const MemoizedProjectCard = memo(function ProjectCard({
 function SectionTitle({ scrollYProgress }: { scrollYProgress: MotionValue<number> }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true });
-  const y = useTransform(scrollYProgress, [0, 0.5], [0, -50]);
-  const opacity = useTransform(scrollYProgress, [0, 0.37], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.6], [0, -50]);
+  const opacity = useTransform(scrollYProgress, [0, 0.22, 0.55], [1, 1, 0]);
   const { t } = useTranslation();
 
   return (
@@ -281,8 +281,9 @@ export default function ProjectsSection() {
     <section
       id="projects"
       ref={containerRef}
-      className="relative min-h-screen py-32 overflow-hidden bg-black"
+      className="relative min-h-screen py-32 overflow-hidden"
     >
+      <div className="absolute inset-0 bg-black/55" />
       <motion.div style={{ y: backgroundY, opacity, willChange: "transform, opacity" }} className="absolute inset-0">
         <div className="absolute inset-0">
           <svg className="w-full h-full opacity-[0.03]">

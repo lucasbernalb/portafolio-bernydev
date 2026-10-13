@@ -1,10 +1,7 @@
 "use client";
 
-import { useRef, useState, useMemo, useEffect } from "react";
-import { motion, useMotionValue, useTransform, useInView, useScroll, useReducedMotion } from "framer-motion";
-import { Canvas, useFrame } from "@react-three/fiber";
-
-import * as THREE from "three";
+import { useRef, useState, useMemo } from "react";
+import { motion, useMotionValue, useTransform, useInView } from "framer-motion";
 import Image from "next/image";
 import { useTranslation } from "@/contexts/LanguageContext";
 
@@ -61,18 +58,35 @@ function SectionTitle({ title }: { title: string }) {
       transition={{ duration: 0.5 }}
       className="flex items-center gap-4"
     >
-      <span className="text-xs font-medium tracking-[0.2em] uppercase text-zinc-500">
+      <span className="text-xs font-medium tracking-[0.2em] uppercase text-zinc-300">
         {title}
       </span>
-      <div className="flex-1 h-px bg-gradient-to-r from-zinc-800 to-zinc-800/50" />
+      <div className="flex-1 h-px bg-gradient-to-r from-zinc-600 to-zinc-700/40" />
     </motion.div>
   );
 }
 
 function AvatarContainer() {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
   const { t } = useTranslation();
+
+  // Tilt 3D al mouse, mismo patrón que SkillCard más abajo en este archivo.
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
+  const rotateX = useTransform(mouseY, [0, 1], [10, -10]);
+  const rotateY = useTransform(mouseX, [0, 1], [-10, 10]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width);
+    mouseY.set((e.clientY - rect.top) / rect.height);
+  };
+  const handleMouseLeave = () => {
+    mouseX.set(0.5);
+    mouseY.set(0.5);
+  };
 
   return (
     <motion.div
@@ -80,8 +94,10 @@ function AvatarContainer() {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={isInView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       className="relative mx-auto"
-      style={{ width: 380, height: 380 }}
+      style={{ width: 380, height: 380, perspective: 900 }}
     >
       <motion.div
         animate={{
@@ -102,20 +118,47 @@ function AvatarContainer() {
           transition={{ duration: 4, repeat: Infinity }}
         />
 
-        <div className="absolute inset-0 rounded-3xl p-[3px] bg-gradient-to-br from-violet-600 via-fuchsia-600 to-violet-600 animate-gradient-flow">
-          <div className="relative w-full h-full rounded-3xl overflow-hidden">
-            <Image
-              src="/avatar/avatar.png"
-              alt="Berny Dev"
-              fill
-              className="object-cover"
-              priority
+        <motion.div
+          className="absolute inset-0 rounded-3xl p-[3px] bg-gradient-to-br from-violet-600 via-fuchsia-600 to-violet-600 animate-gradient-flow"
+          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        >
+          <div className="relative w-full h-full rounded-3xl overflow-hidden bg-gradient-to-br from-zinc-950 via-[#0d0718] to-zinc-950">
+            {/* Fondo ambiental: grilla + glow radial, igual espíritu que el resto de la sección */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_40%,rgba(168,85,247,0.22),transparent_60%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,rgba(217,70,239,0.15),transparent_55%)]" />
+
+            {/* Isotipo */}
+            <div className="absolute inset-0 flex items-center justify-center p-12">
+              <motion.div
+                className="relative w-full h-full"
+                animate={{
+                  filter: [
+                    "drop-shadow(0 0 14px rgba(168,85,247,0.55))",
+                    "drop-shadow(0 0 26px rgba(217,70,239,0.75))",
+                    "drop-shadow(0 0 14px rgba(168,85,247,0.55))",
+                  ],
+                }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Image
+                  src="/bernydev/logosinfondo.png"
+                  alt="Berny Dev"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </motion.div>
+            </div>
+
+            {/* Barrido de brillo neón, tipo cartel encendiéndose */}
+            <motion.div
+              className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/25 to-transparent skew-x-[-20deg]"
+              initial={{ x: "-150%" }}
+              animate={{ x: "350%" }}
+              transition={{ duration: 2.2, repeat: Infinity, repeatDelay: 3.4, ease: "easeInOut" }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-violet-600/40 via-transparent to-fuchsia-600/30" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_30%,rgba(168,85,247,0.2),transparent_50%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_70%,rgba(244,63,94,0.15),transparent_50%)]" />
           </div>
-        </div>
+        </motion.div>
       </motion.div>
 
       <motion.div
@@ -206,221 +249,6 @@ function VisualConnector() {
         transition={{ duration: 0.6, delay: 0.2 }}
       />
     </div>
-  );
-}
-
-function interpolateColor(color1: string, color2: string, t: number): string {
-  const c1 = new THREE.Color(color1);
-  const c2 = new THREE.Color(color2);
-  return "#" + c1.lerp(c2, t).getHexString();
-}
-
-function SerpentSegment({ x, y, z, radius, colorT, index }: {
-  x: number;
-  y: number;
-  z: number;
-  radius: number;
-  colorT: number;
-  index: number;
-}) {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const phaseOffset = index * 0.15;
-
-  useFrame((state: { clock: { elapsedTime: number } }) => {
-    if (meshRef.current) {
-      const breathe = Math.sin(state.clock.elapsedTime * 1.5 + phaseOffset) * 0.15 + 1;
-      meshRef.current.scale.setScalar(breathe);
-    }
-  });
-
-  const color = interpolateColor("#7c3aed", "#c084fc", colorT);
-
-  return (
-    <mesh ref={meshRef} position={[x, y, z]}>
-      <sphereGeometry args={[radius, 8, 8]} />
-      <meshStandardMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={0.5}
-        transparent
-        opacity={0.8 + colorT * 0.2}
-      />
-    </mesh>
-  );
-}
-
-function SpineConnector() {
-  return (
-    <mesh>
-      <cylinderGeometry args={[0.012, 0.012, 4.5, 8]} />
-      <meshStandardMaterial
-        color="#7c3aed"
-        emissive="#7c3aed"
-        emissiveIntensity={0.4}
-        transparent
-        opacity={0.4}
-      />
-    </mesh>
-  );
-}
-
-function SerpentChain() {
-  const segments = 45;
-  const curveHeight = 4.5;
-
-  const segmentPositions = useMemo(() => {
-    const positions = [];
-    for (let i = 0; i < segments; i++) {
-      const t = i / (segments - 1);
-      const y = (t - 0.5) * curveHeight;
-      const waveOffset = Math.sin(t * Math.PI * 3) * 0.08;
-      const x = waveOffset;
-      const z = Math.cos(t * Math.PI * 2) * 0.08;
-      const scaleFactor = t < 0.1 ? t * 10 : t > 0.9 ? (1 - t) * 10 : 1;
-      const radius = 0.07 * scaleFactor;
-      positions.push({ x, y, z, radius, colorT: t, index: i });
-    }
-    return positions;
-  }, []);
-
-  return (
-    <group>
-      <SpineConnector />
-      {segmentPositions.map((seg) => (
-        <SerpentSegment key={seg.index} {...seg} />
-      ))}
-    </group>
-  );
-}
-
-function EnergyTrail() {
-  const pointsRef = useRef<THREE.Points>(null);
-
-  const trailPositions = useMemo(() => {
-    const pts: THREE.Vector3[] = [];
-    const segCount = 60;
-    for (let i = 0; i < segCount; i++) {
-      const t = i / (segCount - 1);
-      const y = (t - 0.5) * 4.5;
-      const waveOffset = Math.sin(t * Math.PI * 3) * 0.08;
-      pts.push(new THREE.Vector3(waveOffset, y, 0.02));
-    }
-    return pts;
-  }, []);
-
-  const positionArray = useMemo(() => {
-    return new Float32Array(trailPositions.flatMap(p => [p.x, p.y, p.z]));
-  }, [trailPositions]);
-
-  useFrame((state: { clock: { elapsedTime: number } }) => {
-    if (pointsRef.current) {
-      const positions = pointsRef.current.geometry.attributes.position.array as Float32Array;
-      for (let i = 0; i < positions.length; i += 3) {
-        const t = i / positions.length;
-        positions[i] += Math.sin(state.clock.elapsedTime * 2 + t * 10) * 0.001;
-      }
-      pointsRef.current.geometry.attributes.position.needsUpdate = true;
-    }
-  });
-
-  return (
-    <points ref={pointsRef}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positionArray, 3]}
-        />
-      </bufferGeometry>
-      <pointsMaterial
-        size={0.03}
-        color="#c084fc"
-        transparent
-        opacity={0.35}
-        blending={THREE.AdditiveBlending}
-        depthWrite={false}
-      />
-    </points>
-  );
-}
-
-function AnimatedSerpent() {
-  const groupRef = useRef<THREE.Group>(null);
-
-  // Rotación muy sutil siguiendo al cursor
-  useFrame((state: { clock: { elapsedTime: number } }) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
-    }
-  });
-
-  return (
-    <group ref={groupRef}>
-      <SerpentChain />
-      <EnergyTrail />
-    </group>
-  );
-}
-
-function SceneLighting() {
-  return (
-    <>
-      <ambientLight intensity={0.2} color="#1a1a2e" />
-      <pointLight position={[0, 2, 2]} intensity={1} color="#a855f7" distance={6} />
-      <pointLight position={[0, -2, 2]} intensity={0.6} color="#c084fc" distance={5} />
-      <pointLight position={[-2, 0, 1]} intensity={0.4} color="#7c3aed" distance={4} />
-    </>
-  );
-}
-
-function EnergySpine({ scrollYProgress }: { scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"] }) {
-  const [showCanvas, setShowCanvas] = useState(false);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
-  // Show canvas only after component enters viewport
-   useEffect(() => {
-     if (isInView) setShowCanvas(true);
-   }, [isInView]);
-
-  const yOffset = useTransform(scrollYProgress, [0, 1], [0, 60]);
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={isInView ? { opacity: 1, scale: 1 } : {}}
-      transition={{ duration: 0.8, delay: 0.3 }}
-      style={{ y: yOffset }}
-      className="relative w-full h-full"
-    >
-      {/* Fallback background - ALWAYS visible */}
-      <div className="absolute inset-0 bg-violet-500/10 rounded-2xl flex items-center justify-center">
-        <div className="w-3 h-48 rounded-full bg-gradient-to-b from-violet-600 via-purple-500 to-fuchsia-600 animate-pulse shadow-[0_0_40px_rgba(168,85,247,0.6)]" />
-      </div>
-
-      <div className="absolute inset-0 flex items-center justify-center">
-        <motion.div
-          className="w-32 h-64 rounded-full"
-          animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 5, repeat: Infinity }}
-          style={{
-            background: "linear-gradient(to top, rgba(168, 85, 247, 0.4), transparent)",
-            filter: "blur(60px)",
-          }}
-        />
-      </div>
-
-{showCanvas && (
-          <Canvas
-            style={{ width: "100%", height: "100%" }}
-            camera={{ position: [0, 0, 2.4], fov: 55 }}
-            dpr={[1, 1.5]}
-            gl={{ antialias: true, alpha: true }}
-          >
-            <SceneLighting />
-            <AnimatedSerpent />
-          </Canvas>
-        )}
-    </motion.div>
   );
 }
 
@@ -638,7 +466,6 @@ function ClosingPhrase() {
 
 export default function AboutSection() {
   const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll();
   const { t } = useTranslation();
 
   const capabilities = useMemo(
@@ -684,59 +511,49 @@ export default function AboutSection() {
       <div className="absolute bottom-1/4 -right-64 w-[500px] h-[500px] bg-fuchsia-600/10 rounded-full blur-[160px]" />
 
       <div ref={containerRef} className="relative max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-20 items-start">
 
-          {/* LEFT SIDE (FIXED VISUAL COLUMN) */}
-          <div className="lg:col-span-2 lg:sticky lg:top-24 min-h-[100vh] flex flex-col justify-between">
-
-            {/* Avatar */}
+        {/* INTRO: avatar + título, lado a lado */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 items-center">
+          <div className="lg:col-span-2 flex flex-col items-center gap-10">
             <div className="flex-shrink-0">
               <AvatarContainer />
             </div>
-
-            {/* Connector */}
-            <div className="flex items-center justify-center py-6">
+            <div className="flex items-center justify-center">
               <VisualConnector />
             </div>
+          </div>
 
-            {/* Energy Spine - Serpent */}
-            <div className="w-full h-[900px] flex items-center justify-center">
-              <EnergySpine scrollYProgress={scrollYProgress} />
+          <div className="lg:col-span-3">
+            <div className="space-y-6">
+              <SectionLabel />
+              <Headline />
+            </div>
+          </div>
+        </div>
+
+        {/* RESTO DEL CONTENIDO: ancho completo, sin columna vacía al lado */}
+        <div className="mt-24 space-y-16 max-w-4xl mx-auto lg:mx-0">
+
+          <div className="space-y-6">
+            <SectionTitle title={t("about.sections.whatIDo")} />
+            <CapabilityGrid capabilities={capabilities} />
+          </div>
+
+          <div className="space-y-6">
+            <SectionTitle title={t("about.sections.experience")} />
+            <SkillsGrid skills={skills} />
+          </div>
+
+          <div className="space-y-6">
+            <SectionTitle title={t("about.sections.philosophy")} />
+            <div className="p-6 rounded-xl bg-zinc-900/50 backdrop-blur-sm border border-zinc-800 max-w-3xl">
+              <p className="text-zinc-300 leading-relaxed">
+                <span className="text-violet-400 font-medium">{t("about.philosophyPrefix")}</span> {t("about.philosophyText")}
+              </p>
             </div>
           </div>
 
-          {/* RIGHT SIDE */}
-          <div className="lg:col-span-3 max-w-xl">
-            <div className="space-y-16">
-
-              <div className="space-y-6">
-                <SectionLabel />
-                <Headline />
-              </div>
-
-              <div className="space-y-6">
-                <SectionTitle title={t("about.sections.whatIDo")} />
-                <CapabilityGrid capabilities={capabilities} />
-              </div>
-
-              <div className="space-y-6">
-                <SectionTitle title={t("about.sections.experience")} />
-                <SkillsGrid skills={skills} />
-              </div>
-
-              <div className="space-y-6">
-                <SectionTitle title={t("about.sections.philosophy")} />
-                <div className="p-6 rounded-xl bg-zinc-900/50 backdrop-blur-sm border border-zinc-800">
-                  <p className="text-zinc-300 leading-relaxed">
-                    <span className="text-violet-400 font-medium">{t("about.philosophyPrefix")}</span> {t("about.philosophyText")}
-                  </p>
-                </div>
-              </div>
-
-              <ClosingPhrase />
-            </div>
-          </div>
-
+          <ClosingPhrase />
         </div>
       </div>
     </section>
