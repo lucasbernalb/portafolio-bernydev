@@ -142,7 +142,7 @@ function AvatarContainer() {
               >
                 <Image
                   src="/bernydev/logosinfondo.png"
-                  alt="Berny Dev"
+                   alt="BOAI"
                   fill
                   className="object-contain"
                   priority

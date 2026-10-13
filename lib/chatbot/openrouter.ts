@@ -3,7 +3,7 @@ import type { ChatCandidateResponse, LeadCandidate, Message } from "./types"
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 const MODEL = "google/gemini-2.5-flash"
 const SITE_URL = "https://bernydev.vercel.app"
-const SITE_NAME = "BERNY DEV"
+const SITE_NAME = "BOAI"
 
 const RESPONSE_FORMAT = {
   type: "json_schema",

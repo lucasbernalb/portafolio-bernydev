@@ -13,24 +13,24 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Berny Dev | Desarrollador Full Stack & IA",
-  description: "Portfolio de Berny Dev. Desarrollador Full Stack especializado en Next.js, React, TypeScript e Inteligencia Artificial. Disponible para proyectos.",
-  keywords: ["desarrollador full stack", "next.js", "react", "typescript", "inteligencia artificial", "uruguay", "desarrollo web", "freelance"],
-  authors: [{ name: "Berny Dev" }],
-  creator: "Berny Dev",
+  title: "BOAI | Webs, agentes y automatizaciones",
+  description: "BOAI diseña y construye webs, agentes de IA y automatizaciones para negocios que quieren operar mejor.",
+  keywords: ["desarrollo web", "agentes de IA", "automatización de procesos", "consultoría tecnológica", "inteligencia artificial", "Uruguay"],
+  authors: [{ name: "BOAI" }],
+  creator: "BOAI",
   openGraph: {
     type: "website",
     locale: "es_UY",
     url: "https://bernydev.vercel.app",
-    title: "Berny Dev | Desarrollador Full Stack & IA",
-    description: "Desarrollador Full Stack creando experiencias web modernas potenciadas por IA.",
-    siteName: "Berny Dev",
-    images: [{ url: "/bernydev/bernydevhero.png", width: 1200, height: 630, alt: "Berny Dev Portfolio" }],
+    title: "BOAI | Webs, agentes y automatizaciones",
+    description: "Webs, agentes y automatizaciones para negocios que quieren operar mejor.",
+    siteName: "BOAI",
+    images: [{ url: "/bernydev/bernydevhero.png", width: 1200, height: 630, alt: "BOAI" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Berny Dev | Desarrollador Full Stack & IA",
-    description: "Desarrollador Full Stack creando experiencias web modernas potenciadas por IA.",
+    title: "BOAI | Webs, agentes y automatizaciones",
+    description: "Webs, agentes y automatizaciones para negocios que quieren operar mejor.",
     images: ["/bernydev/bernydevhero.png"],
   },
   robots: {

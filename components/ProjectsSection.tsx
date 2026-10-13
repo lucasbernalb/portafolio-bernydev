@@ -207,10 +207,6 @@ function SectionTitle({ scrollYProgress }: { scrollYProgress: MotionValue<number
         transition={{ duration: 0.8, delay: 0.1 }}
         className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter"
       >
-        <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 gradient-text">
-          Proyectos
-        </span>
-        <br />
         <motion.span
           className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 gradient-text"
           initial={{ x: -50, opacity: 0 }}
@@ -229,6 +225,61 @@ function SectionTitle({ scrollYProgress }: { scrollYProgress: MotionValue<number
       >
         {t("projects.sectionDesc")}
       </motion.p>
+    </motion.div>
+  );
+}
+
+function AgentDemoCard() {
+  const { t } = useTranslation();
+
+  const openAgent = () => {
+    window.dispatchEvent(new Event("boai:open-agent"));
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      className="relative mb-12 overflow-hidden rounded-2xl border border-violet-500/30 bg-gradient-to-br from-violet-950/50 via-zinc-950/80 to-cyan-950/30 p-6 md:p-8"
+    >
+      <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-violet-500/15 blur-3xl" />
+      <div className="absolute -bottom-32 left-1/3 h-64 w-64 rounded-full bg-cyan-500/10 blur-3xl" />
+
+      <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="max-w-2xl">
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-400/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-violet-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
+            {t("projects.agentBadge")}
+          </span>
+          <h3 className="text-2xl font-bold tracking-tight text-white md:text-3xl">
+            {t("projects.agentTitle")}
+          </h3>
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-zinc-300 md:text-base">
+            {t("projects.agentDesc")}
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+          <button
+            type="button"
+            onClick={openAgent}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-violet-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_0_25px_rgba(168,85,247,0.3)] transition-all hover:bg-violet-400 hover:shadow-[0_0_35px_rgba(168,85,247,0.5)]"
+          >
+            {t("projects.agentCta")}
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 12h14" />
+            </svg>
+          </button>
+          <a
+            href="#contact"
+            className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-zinc-200 transition-colors hover:border-violet-400/50 hover:bg-violet-500/10 hover:text-white"
+          >
+            {t("projects.proposalCta")}
+          </a>
+        </div>
+      </div>
     </motion.div>
   );
 }
@@ -301,6 +352,8 @@ export default function ProjectsSection() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <SectionTitle scrollYProgress={scrollYProgress} />
+
+        <AgentDemoCard />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {projects.slice(0, 4).map((project, index) => (

@@ -1,7 +1,7 @@
-# 🧠 AGENTS.md — BERNY DEV Portfolio
+# 🧠 AGENTS.md — BOAI Portfolio
 
 ## 🎯 Project Vision
-Create a premium developer portfolio for "BERNY DEV", a Full Stack Developer focused on AI-driven experiences.
+Create a premium digital solutions studio website for "BOAI", focused on web products, AI agents, automation and technology consulting.
 
 The site must feel:
 - Modern
@@ -78,7 +78,7 @@ Avoid:
 
 ## 🚀 Tone & Branding
 
-Brand: BERNY DEV
+Brand: BOAI
 
 Voice:
 - Professional
@@ -148,7 +148,7 @@ Responsible for:
 - Tone of text
 
 Rules:
-- Maintain BERNY DEV identity
+- Maintain BOAI identity
 - Use neon violet strategically
 - Keep a premium feel
 

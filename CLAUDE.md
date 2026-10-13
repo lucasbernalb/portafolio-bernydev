@@ -1,6 +1,6 @@
 @AGENTS.md
 
-# PROJECT CONTEXT — BERNY DEV Portfolio
+# PROJECT CONTEXT — BOAI Portfolio
 
 > Este archivo es para ser leído por Claude al inicio de cada sesión. Conciso, denso, útil.
 

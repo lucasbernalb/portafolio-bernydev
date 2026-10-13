@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
-const titleText = "BERNY DEV";
+const titleText = "BOAI";
 const letters = titleText.split("");
 
 interface LogoProps {
@@ -36,7 +36,7 @@ export default function Logo({
       >
         <Image
           src="/bernydev/logosinfondo.png"
-          alt="BERNY DEV Logo"
+          alt="BOAI Logo"
           fill
           className={`object-contain ${imageClassName}`}
           priority
@@ -45,21 +45,33 @@ export default function Logo({
 
       {/* Text — separate from image */}
       <div className="relative">
-        <h1 className="text-xl font-bold tracking-tight text-violet-400">
-          {letters.map((letter, index) => (
-            <motion.span
-              key={index}
-              initial={animate ? { opacity: 0, y: 10 } : {}}
-              animate={animate ? { opacity: 1, y: 0 } : {}}
-              transition={{
-                delay: index * 0.24,
-                duration: 0.3,
-              }}
-              className="inline-block"
-            >
-              {letter === " " ? "\u00A0" : letter}
-            </motion.span>
-          ))}
+          <h1 className="text-xl font-bold tracking-tight">
+            <span className="text-zinc-100">
+              {letters.slice(0, 2).map((letter, index) => (
+                <motion.span
+                  key={letter}
+                  initial={animate ? { opacity: 0, y: 10 } : {}}
+                  animate={animate ? { opacity: 1, y: 0 } : {}}
+                  transition={{ delay: index * 0.24, duration: 0.3 }}
+                  className="inline-block"
+                >
+                  {letter}
+                </motion.span>
+              ))}
+            </span>
+            <span className="text-violet-400">
+              {letters.slice(2).map((letter, index) => (
+                <motion.span
+                  key={letter}
+                  initial={animate ? { opacity: 0, y: 10 } : {}}
+                  animate={animate ? { opacity: 1, y: 0 } : {}}
+                  transition={{ delay: (index + 2) * 0.24, duration: 0.3 }}
+                  className="inline-block"
+                >
+                  {letter}
+                </motion.span>
+              ))}
+            </span>
           {showCursor && (
             <motion.span
               className="inline-block w-[3px] h-6 ml-1 bg-violet-400 align-middle"

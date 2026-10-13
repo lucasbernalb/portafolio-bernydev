@@ -77,6 +77,12 @@ export default function AIAssistant() {
     return () => clearInterval(interval);
   }, [isOpen, hints.length]);
 
+  useEffect(() => {
+    const openAgent = () => setIsOpen(true);
+    window.addEventListener("boai:open-agent", openAgent);
+    return () => window.removeEventListener("boai:open-agent", openAgent);
+  }, []);
+
   const handleSubmit = async () => {
     const text = input.trim();
     if (!text || isTyping) return;
@@ -186,7 +192,7 @@ export default function AIAssistant() {
               <span className="text-lg">✦</span>
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm font-semibold text-white">
-                  BERNY DEV
+                  BOAI
                 </h3>
                 <p className="text-[11px] text-zinc-400">{t("chatbot.subtitle")}</p>
               </div>

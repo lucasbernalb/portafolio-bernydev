@@ -6,9 +6,9 @@
     "contact": "Contact"
   },
   "hero": {
-    "subtitle": "Full Stack & AI Automation. ",
-    "highlight": "Modern web + Intelligent automation for your business.",
-    "cta": "See more"
+    "subtitle": "Websites, AI agents and automation ",
+    "highlight": "for businesses that want to operate better.",
+    "cta": "Discover what we do"
   },
   "scroll": {
     "home": "Home",
@@ -19,9 +19,9 @@
   "about": {
     "label": "About Me",
     "available": "Available for work",
-    "headline1": "I'm Berny.",
-    "headline2": "Artist at heart, developer by passion.",
-    "headline3": "AI automation that transforms your business.",
+    "headline1": "Digital solutions",
+    "headline2": "that turn ideas into real systems.",
+    "headline3": "AI, automation and web development for better growth.",
     "sections": {
       "whatIDo": "What I Do",
       "experience": "Experience",
@@ -29,39 +29,44 @@
     },
     "capabilities": [
       {
-        "title": "Full Stack Development",
-        "desc": "End-to-end solutions with clean, scalable architecture ready for production."
+        "title": "Web development",
+        "desc": "Modern digital products designed to grow alongside your business."
       },
       {
-        "title": "Intelligent Automation",
-        "desc": "We automate processes and workflows with AI so your business runs while you grow."
+        "title": "AI agents",
+        "desc": "Intelligent agents that understand context, guide conversations and help execute tasks."
       },
       {
-        "title": "Premium Performance",
-        "desc": "Ultra-fast applications optimized to the max so every interaction feels smooth and instant."
+        "title": "Process automation",
+        "desc": "We connect tools and workflows to reduce repetitive tasks and improve operations."
       },
       {
-        "title": "AI Agents",
-        "desc": "We build virtual assistants and intelligent agents that work 24/7 for your company."
+        "title": "Technology consulting",
+        "desc": "We identify opportunities and design digital solutions around the real problem."
       }
     ],
     "skills": [
-      { "name": "Frontend Engineering", "level": "Expert", "desc": "React, Next.js, animations, UI systems" },
-      { "name": "Backend & APIs", "level": "Advanced", "desc": "Node.js, databases, integrations, scalable architecture" },
-      { "name": "Modern Stack", "level": "Advanced", "desc": "Latest tools seamlessly integrated into the workflow" },
-      { "name": "AI Automation", "level": "Advanced", "desc": "Processes, workflows, enterprise integrations with artificial intelligence" },
-      { "name": "Performance", "level": "Advanced", "desc": "Optimization, scalability, enterprise-grade UX speed" },
-      { "name": "AI Agents", "level": "Advanced", "desc": "Smart chatbots, virtual assistants, autonomous agents" }
+      { "name": "Web products", "level": "Core", "desc": "React, Next.js, modern interfaces and responsive experiences" },
+      { "name": "Backend and integrations", "level": "Specialty", "desc": "APIs, databases, external services and scalable architecture" },
+      { "name": "Automation", "level": "Growing", "desc": "Processes, workflows and integrations applied to concrete needs" },
+      { "name": "AI agents", "level": "Growing", "desc": "Intelligent assistants, context, tools and conversational flows" },
+      { "name": "Performance", "level": "Specialty", "desc": "Optimization, speed and fluid digital experiences" },
+      { "name": "Consulting", "level": "Exploring", "desc": "Diagnosis and solution design focused on useful outcomes" }
     ],
-    "philosophyPrefix": "Build. Automate. Transform.",
-    "philosophyText": "I don't do generic solutions — every project has its own identity. Web development + AI automation working together to make your business more efficient and memorable.",
-    "closing": "Design is my essence, coding is my tool, automation is my edge. Every line of code is a decision that drives your business forward."
+    "philosophyPrefix": "Understand. Design. Build.",
+    "philosophyText": "BOAI combines web development, artificial intelligence and automation to create useful, clear solutions aligned with each operation.",
+    "closing": "Technology creates value when it solves concrete problems. Every BOAI solution aims to improve how a business works, decides and grows."
   },
   "projects": {
-    "sectionBadge": "Featured Work",
-    "sectionHighlight": "Featured",
-    "sectionDesc": "A curated collection of digital experiences and AI where innovation powers your business.",
-    "pageSubtitle": "A selection of my work — web development and AI automation",
+    "sectionBadge": "BOAI / PORTFOLIO",
+    "sectionHighlight": "FEATURED SOLUTIONS",
+    "sectionDesc": "A selection of digital products, intelligent agents and systems created to solve real problems.",
+    "pageSubtitle": "Websites, agents and automation in progress",
+    "agentBadge": "Live demo",
+    "agentTitle": "BOAI intelligent agent",
+    "agentDesc": "Try an agent designed to understand needs, guide conversations and prepare the next step of a project.",
+    "agentCta": "Talk to the agent",
+    "proposalCta": "Request a proposal",
     "seeAll": "See All Projects",
     "demo": "Demo",
     "github": "GitHub",
@@ -87,7 +92,7 @@
   },
   "contact": {
     "title": "Contact",
-    "subtitle": "Let's transform your business with smart technology"
+    "subtitle": "Let's discuss the system your business needs"
   },
   "navMenu": {
     "open": "Open menu",
@@ -98,14 +103,14 @@
     "toEs": "Cambiar a Español"
   },
   "chatbot": {
-    "welcome": "Hi! 👋 I'm the BERNY DEV assistant. How can I help you today?",
-    "hint1": "💬 Got questions?",
-    "hint2": "💡 Tell me about your project",
-    "hint3": "🚀 Need a website?",
-    "hint4": "🤖 Let's talk about your idea",
-    "hint5": "⚡ AI Automations",
-    "title": "BERNY DEV",
-    "subtitle": "AI Assistant",
+    "welcome": "Hi! 👋 I'm BOAI's intelligent agent. What process or idea would you like to improve?",
+    "hint1": "💬 Have a question?",
+    "hint2": "💡 Tell us about your project",
+    "hint3": "🚀 Need a digital solution?",
+    "hint4": "🤖 Need an AI agent?",
+    "hint5": "⚡ What process should we automate?",
+    "title": "BOAI",
+    "subtitle": "Intelligent agent",
     "placeholder": "Type your message...",
     "ariaOpen": "Open assistant",
     "ariaClose": "Close assistant",

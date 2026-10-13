@@ -5,8 +5,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { useTranslation } from "@/contexts/LanguageContext";
 
-const mainTitle = "BERNY";
-const subTitle = "DEV";
+const mainTitle = "BO";
+const subTitle = "AI";
 const glitchChars = "!@#$%&*%§<>?/|\\";
 
 export default function HeroSection() {
@@ -71,7 +71,7 @@ export default function HeroSection() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="text-6xl md:text-8xl font-black leading-[0.9] relative"
             >
-              {/* BERNY con Glitch Mejorado */}
+              {/* BO con Glitch Mejorado */}
               <span className="relative inline-block">
                 <motion.span
                   className="bg-gradient-to-b from-white to-violet-200 gradient-text relative inline-block"
@@ -155,9 +155,7 @@ export default function HeroSection() {
                 </motion.span>
               </span>
 
-              <br />
-
-              {/* DEV con Glitch Mejorado */}
+              {/* AI con un acento cromático propio, visualmente unido a BO */}
               <span className="relative inline-block">
                 <motion.span
                   className="bg-gradient-to-r from-violet-400 to-purple-400 gradient-text relative inline-block"
@@ -168,7 +166,7 @@ export default function HeroSection() {
                   {subTitle}
                 </motion.span>
 
-                {/* Capa Glitch Cyan para DEV */}
+                 {/* Capa Glitch Cyan para AI */}
                 <motion.span
                   className="absolute inset-0 bg-gradient-to-r from-cyan-300 to-cyan-500 gradient-text"
                   initial={{ opacity: 0, x: 0, skewX: 0 }}
@@ -189,7 +187,7 @@ export default function HeroSection() {
                   {subTitle}
                 </motion.span>
 
-                {/* Capa Glitch Magenta para DEV */}
+                 {/* Capa Glitch Magenta para AI */}
                 <motion.span
                   className="absolute inset-0 bg-gradient-to-r from-pink-300 to-pink-500 gradient-text"
                   initial={{ opacity: 0, x: 0, skewX: 0 }}
@@ -210,7 +208,7 @@ export default function HeroSection() {
                   {subTitle}
                 </motion.span>
 
-                {/* Caracteres Random para DEV */}
+                 {/* Caracteres Random para AI */}
                 <motion.span
                   className="absolute inset-0 bg-gradient-to-r from-violet-200 to-purple-300 gradient-text"
                   initial={{ opacity: 0 }}
